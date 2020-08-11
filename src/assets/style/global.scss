@@ -1,0 +1,9 @@
+@import "reset";
+
+// 1rem = fontsize px
+// 1px = (1/fontsize) rem
+// 假定屏幕尺寸为375px
+$fontSize : 375 / 10;
+@function px2rem($px){
+  @return ($px/$fontSize)+rem
+}

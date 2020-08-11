@@ -1,22 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/readerView'
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/readerView',
+    name: 'ReaderView',
+    component: () => import(/* webpackChunkName: "about" */ '../views/readerView/index'),
+    children: [{
+      path: ':fileName',
+      // 动态路由
+      component: () => import(/* webpackChunkName: "about" */ '../components/bookReader/index.vue')
+    }]
   }
 ]
 
