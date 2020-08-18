@@ -6,45 +6,97 @@
 
 <script>
 import Epub from 'epubjs'
+import bookMixins from '../../mixins/bookMixins'
+import settingMixins from '../../mixins/settingMixins'
 // 设置全局的ePub变量
 global.ePub = Epub
 export default {
   name: 'bookReader',
+  mixins: [bookMixins, settingMixins],
   mounted () {
-    // 为啥这个写上面，它就执行了？？？？
     const url = this.$route.params.fileName
     const bookName = url.split('|').join('/')
-    this.renderBook(bookName)
+    this.$store.dispatch('setFileName', bookName).then(() => {
+      this.renderBook()
+    })
   },
   methods: {
-    renderBook (bookName) {
+    renderBook () {
       // 要使用http协议！
       const baseUrl = 'http://127.0.0.1:8081/epub/'
       const fileType = '.epub'
-      const bookUrl = `${baseUrl}${bookName}${fileType}`
-      console.log(bookUrl)
-
-      this.book = new Epub(bookUrl)
-      this.book2 = new Epub('https://s3.amazonaws.com/epubjs/books/moby-dick/OPS/package.opfb')
-      console.log(new Epub('http://www.youbaobao.xyz/epub/History/2018_Book_TheCostOfInsanityInNineteenth-.epub'))
-      console.log(this.book)
-      // 这里的bookUrl要是直接使用的话，是不能直接取到的图书的
-      // 因为获取图书的过程是异步操作，如果不经过vuex的action操作，图书是不能获取的
-      // 打印出来的this.book是open false，但是过一会打开，就是open true， 所以这是一个异步操作！
-      // 所以nginx的缓存要设置清除(我猜的)，不然感受不到这个异步操作时间差
-      console.log(this.book2)
-      this.rendition = this.book2.renderTo('reader', {
-        width: 600,
-        height: 400,
+      const url = baseUrl + this.fileName + fileType
+      this.book = new Epub(url)
+      // 此时书籍尚未解析，所以不能设置字体大小
+      // this.book.rendition.themes.fontSize()
+      this.$store.dispatch('setCurrentBook', this.book)
+      console.log(this.currentBook)
+      this.rendition = this.book.renderTo('reader', {
+        width: innerWidth,
+        height: innerHeight,
+        // 如果flow是下滑模式 'scrolled-doc'那么this.nextPage()就是上下章的切换
+        // flow: 'scrolled-doc',
+        flow: 'paginated',
         // 兼容微信
         method: 'default'
       })
-      console.log(this.rendition)
+      // 设置渲染字体大小
+      this.currentBook.rendition.themes.fontSize(this.currentFontSize.fontSize + 'px')
       this.rendition.display()
+      // this.book.ready.then(() => {})
+      // rendition监听不了事件
+      // 是版本问题，降级就可以用了
+      // 降低版本之后，封面也出现了
+      // 重点是安装时锁定版本，package.json中不能有^，
+      // https://blog.csdn.net/weixin_45915752/article/details/105182059
+      // https://blog.csdn.net/qq_27036043/article/details/86664672
+      // 这个好像没有什么用处https://zhuanlan.zhihu.com/p/86138298
+      this.rendition.on('touchstart', e => {
+        // changedTouches 一个数组，数组的length为手指数量，一个手指就是0号元素
+        // clientX, clientY 当前点击位置
+        this.timeStamp = e.timeStamp
+        this.touchStartX = e.changedTouches[0].clientX
+      })
+      this.rendition.on('touchend', e => {
+        const span = e.timeStamp - this.timeStamp
+        this.touchEndX = e.changedTouches[0].clientX
+        const moveDirection = this.touchStartX - this.touchEndX
+        if (span < 500 && moveDirection > 40) {
+          // console.log('上一页')
+          this.prevPage()
+        } else if (span < 500 && moveDirection < -40) {
+          // console.log('下一页')
+          this.nextPage()
+        } else {
+          this.toggleMenu(!this.showMenuFlag)
+        }
+        e.preventDefault()
+        e.stopPropagation()
+      })
+      this.rendition.on('click', e => {
+        this.toggleMenu(!this.showMenuFlag)
+      })
     },
-    data () {
-      return {
+    prevPage () {
+      if (this.rendition) {
+        this.rendition.prev()
       }
+    },
+    nextPage () {
+      if (this.rendition) {
+        this.rendition.next()
+      }
+    },
+    toggleMenu (flag) {
+      // console.log(flag)
+      this.$store.dispatch('setShowMenuFlag', flag)
+    }
+  },
+  data () {
+    return {
+      timeStamp: 0,
+      touchStartX: 0,
+      touchEndX: 0
     }
   }
 }

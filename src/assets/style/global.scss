@@ -7,3 +7,19 @@ $fontSize : 375 / 10;
 @function px2rem($px){
   @return ($px/$fontSize)+rem
 }
+
+@mixin center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-down-enter, .slide-down-leave-active{
+  transform: translate3d(0, -138px, 0);
+}
+// 下边栏分了两块，所以动画要改为两者的高度之和
+.slide-up-enter, .slide-up-leave-active{
+  transform: translate3d(0, 138px, 0);
+}
+
+
