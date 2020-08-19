@@ -11,6 +11,9 @@ export default {
   setShowMenuItemFlag: ({ commit }, flag) => {
     return commit('SET_SHOWMENUITEMFLAG', flag)
   },
+  setShowFontFamilyFlag: ({ commit }, flag) => {
+    return commit('SET_SHOWFONTFAMILYFLAG', flag)
+  },
   setMenuItemIndex: ({ commit }, itemIndex) => {
     return commit('SET_MENUITEMINDEX', itemIndex)
   },

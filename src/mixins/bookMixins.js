@@ -2,7 +2,8 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters(['showMenuFlag',
+    ...mapGetters([
+      'showMenuFlag',
       'showMenuItemFlag',
       'showBookIndexFlag',
       'fileName',

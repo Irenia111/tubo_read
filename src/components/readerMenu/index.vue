@@ -31,6 +31,7 @@
       </div>
     </div>
   </transition>
+    <font-family-setting />
   </div>
 </template>
 
@@ -40,17 +41,18 @@ import ThemeSetting from './ThemeSetting'
 import FontSizeSetting from './FontSizeSetting'
 import ProgressSetting from './ProgressSetting'
 import BookIndex from './BookIndex'
+import FontFamilySetting from './FontFamilySetting'
 export default {
   name: 'readerMenu',
   mixins: [bookMixins],
-  components: { BookIndex, ProgressSetting, ThemeSetting, FontSizeSetting },
+  components: { FontFamilySetting, BookIndex, ProgressSetting, ThemeSetting, FontSizeSetting },
   methods: {
     showBookIndex () {
       this.$store.dispatch('setShowMenuFlag', !this.showMenuFlag)
       this.$store.dispatch('setShowBookIndexFlag', !this.showBookIndexFlag)
     },
     showMenuItem (itemIndex) {
-      this.$store.dispatch('setShowMenuItemFlag', !this.showMenuItemFlag)
+      this.$store.dispatch('setShowMenuItemFlag', true)
       this.$store.dispatch('setMenuItemIndex', itemIndex)
     },
     hideMenuItem () {
@@ -77,10 +79,6 @@ export default {
     font-size: px2rem(20);
     .menu-item{
       margin: px2rem(20) 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
     }
   }
   .menu-wrapper{

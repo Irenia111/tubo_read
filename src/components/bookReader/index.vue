@@ -16,6 +16,8 @@ export default {
   mounted () {
     const url = this.$route.params.fileName
     const bookName = url.split('|').join('/')
+    // 初始化阅读器设置
+    this.$store.dispatch('initSetting')
     this.$store.dispatch('setFileName', bookName).then(() => {
       this.renderBook()
     })
@@ -30,7 +32,7 @@ export default {
       // 此时书籍尚未解析，所以不能设置字体大小
       // this.book.rendition.themes.fontSize()
       this.$store.dispatch('setCurrentBook', this.book)
-      console.log(this.currentBook)
+      // console.log(this.currentBook)
       this.rendition = this.book.renderTo('reader', {
         width: innerWidth,
         height: innerHeight,
@@ -42,6 +44,14 @@ export default {
       })
       // 设置渲染字体大小
       this.currentBook.rendition.themes.fontSize(this.currentFontSize.fontSize + 'px')
+      // 设置字体
+      this.currentBook.rendition.themes.font(this.currentFontFamily.fontName)
+      // 注册主题
+      this.themeList.forEach(item => {
+        this.currentBook.rendition.themes.register(item.name, item.style)
+      })
+      // 设置主题
+      this.currentBook.rendition.themes.select(this.currentTheme.name)
       this.rendition.display()
       // this.book.ready.then(() => {})
       // rendition监听不了事件
@@ -76,6 +86,19 @@ export default {
       this.rendition.on('click', e => {
         this.toggleMenu(!this.showMenuFlag)
       })
+      // 字体设置
+      // 将字体文件加载入iframe的styleSheet中
+      // 此处需要注意，因为styleSheet以link的形式加入，需要配置文件的url，不能采用本地静态资源，故字体文件存放在nginx服务器
+      this.rendition.hooks.content.register((contents) => {
+        // 不能直接写assets的路径
+        // 可以通过addStyleSheet的源码了解
+        // contents.addStylesheet('../../assets/fonts/daysOne.css')
+        const baseUrl = 'http://127.0.0.1:8081/fonts/'
+        contents.addStylesheet(baseUrl + 'cabin.css')
+        contents.addStylesheet(baseUrl + 'daysOne.css')
+        contents.addStylesheet(baseUrl + 'montserrat.css')
+        contents.addStylesheet(baseUrl + 'tangerine.css')
+      })
     },
     prevPage () {
       if (this.rendition) {
@@ -90,6 +113,7 @@ export default {
     toggleMenu (flag) {
       // console.log(flag)
       this.$store.dispatch('setShowMenuFlag', flag)
+      this.$store.dispatch('setShowFontFamilyFlag', false)
     }
   },
   data () {

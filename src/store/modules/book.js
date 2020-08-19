@@ -4,6 +4,7 @@ const book = {
     showMenuFlag: false,
     showMenuItemFlag: false,
     showBookIndexFlag: false,
+    showFontFamilyFlag: false,
     menuItemIndex: -1,
     currentBook: null
   },
@@ -19,6 +20,9 @@ const book = {
     },
     SET_SHOWMENUITEMFLAG: (state, flag) => {
       state.showMenuItemFlag = flag
+    },
+    SET_SHOWFONTFAMILYFLAG: (state, flag) => {
+      state.showFontFamilyFlag = flag
     },
     SET_MENUITEMINDEX: (state, itemIndex) => {
       state.menuItemIndex = itemIndex
