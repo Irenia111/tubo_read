@@ -18,8 +18,8 @@
       </span>
     </div>
     <div class="progress-item">
-      <div class="progress-timer">已读{{timeStamp}}</div>
-      <div class="progress-des">{{isProgressAvailable ? '进度' + currentBookProgress + '%' : '加载中...'}}</div>
+      <div class="item progress-timer">已读{{timeStamp}}</div>
+      <div class="item progress-des">{{isProgressAvailable ? '进度' + currentBookProgress + '%' : '加载中...'}}</div>
     </div>
   </div>
 </template>
@@ -37,38 +37,26 @@ export default {
   },
   computed: {
     timeStamp: function () {
-      const hour = Math.ceil(this.timer / 60)
+      const hour = Math.floor(this.timer / 60)
       const min = this.timer % 60
       return hour > 0 ? `${hour}小时${min}分钟` : `${min}分钟`
     }
   },
   mounted () {
-    // 分页需要书籍加载
-    this.currentBook.ready.then(() => {
-      //  this.currentBook.locations.generate(每页的呈现字数)
-      // 默认每页呈现 700 字，根据页面宽度及字体大小调整页面呈现字数
-      // 这种分页调节不包括图片等信息
-      return this.currentBook.locations.generate(700 * (window.innerWidth / 375) * (this.currentFontSize / 17))
-    }).then((locations) => {
-      this.$store.dispatch('setIsProgressAvailable', true)
-    })
+    this.progress = this.currentBookProgress
+    this.updateBg(this.currentBookProgress)
   },
   methods: {
+    updateBg (value) {
+      this.progress = value
+      this.$refs.progressBar.style.backgroundSize = `${value}% 100%`
+    },
     onProgressChange (value) {
-      // console.log(value)
-      this.$store.dispatch('setCurrentBookProgress', value).then(() => {
-        this.displayProgress()
-      })
+      const cfi = this.currentBook.locations.cfiFromPercentage(value / 100)
+      this.display(cfi, this.refreshLocation())
     },
     onProgressInput (value) {
-      this.$store.dispatch('setCurrentBookProgress', value).then(() => {
-        this.$refs.progressBar.style.backgroundSize = `${value}% 100%`
-      })
-    },
-    displayProgress () {
-      const cfi = this.currentBook.locations.cfiFromPercentage(this.currentBookProgress / 100)
-      // console.log(cfi)
-      this.currentBook.rendition.display(cfi)
+      this.updateBg(value)
     },
     preSection () {
       if (this.currentSection > 0 && this.isProgressAvailable) {
@@ -87,20 +75,11 @@ export default {
     displaySection () {
       const sectionInfo = this.currentBook.section(this.currentSection)
       if (sectionInfo && sectionInfo.href) {
-        this.currentBook.rendition.display(sectionInfo.href).then(() => {
-          this.refreshProgress()
+        this.display(sectionInfo.href, () => {
+          this.refreshLocation()
+          this.updateBg(this.currentBookProgress)
         })
       }
-    },
-    refreshProgress () {
-      const currentLocation = this.currentBook.rendition.currentLocation()
-      const section = currentLocation.start.index
-      const currentCfi = currentLocation.start.cfi
-      const progress = Math.floor(this.currentBook.locations.percentageFromCfi(currentCfi))
-      this.$store.dispatch('setCurrentBookProgress', progress)
-      this.$store.dispatch('setCurrentSection', section)
-      // console.log(currentCfi)
-      this.$store.dispatch('setCurrentCfi', currentCfi)
     }
   }
 }
@@ -144,7 +123,14 @@ export default {
     }
     .progress-item{
       flex: 1 0 auto;
+      margin: px2rem(18) 0;
       font-size: px2rem(16);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      .item{
+        @include center;
+      }
     }
   }
 

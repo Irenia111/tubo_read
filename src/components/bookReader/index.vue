@@ -18,21 +18,20 @@ export default {
     const bookName = url.split('|').join('/')
     // 初始化阅读器设置
     this.$store.dispatch('initSetting')
+    this.$store.dispatch('initCurrentBook')
     this.$store.dispatch('setFileName', bookName).then(() => {
-      this.$store.dispatch('initCurrentBook').then(() => {
-        this.renderBook()
-        this.bookTimer = setInterval(() => {
-          if (this.clock === 60) {
-            this.$store.dispatch('setTimer', this.timer + 1)
-            this.clock = 1
-          } else {
-            this.clock += 1
-          }
-        }, 1000)
-      })
+      this.renderBook()
+      this.bookTimer = setInterval(() => {
+        if (this.clock === 60) {
+          this.$store.dispatch('setTimer', this.timer + 1)
+          this.clock = 1
+        } else {
+          this.clock += 1
+        }
+      }, 1000)
     })
   },
-  destroyed () {
+  beforeDestroy () {
     clearInterval(this.bookTimer)
   },
   methods: {
@@ -55,17 +54,19 @@ export default {
         // 兼容微信
         method: 'default'
       })
-      // 设置渲染字体大小
-      this.currentBook.rendition.themes.fontSize(this.currentFontSize.fontSize + 'px')
-      // 设置字体
-      this.currentBook.rendition.themes.font(this.currentFontFamily.fontName)
-      // 注册主题
-      this.themeList.forEach(item => {
-        this.currentBook.rendition.themes.register(item.name, item.style)
+      const location = this.currentCfi
+      this.display(location, () => {
+        // 设置渲染字体大小
+        this.currentBook.rendition.themes.fontSize(this.currentFontSize.fontSize + 'px')
+        // 设置字体
+        this.currentBook.rendition.themes.font(this.currentFontFamily.fontName)
+        // 注册主题
+        this.themeList.forEach(item => {
+          this.currentBook.rendition.themes.register(item.name, item.style)
+        })
+        // 设置主题
+        this.currentBook.rendition.themes.select(this.currentTheme.name)
       })
-      // 设置主题
-      this.currentBook.rendition.themes.select(this.currentTheme.name)
-      this.rendition.display()
       this.rendition.on('touchstart', e => {
         // changedTouches 一个数组，数组的length为手指数量，一个手指就是0号元素
         // clientX, clientY 当前点击位置
@@ -100,20 +101,30 @@ export default {
         contents.addStylesheet(baseUrl + 'montserrat.css')
         contents.addStylesheet(baseUrl + 'tangerine.css')
       })
+      // 分页需要书籍加载
+      this.currentBook.ready.then(() => {
+        //  this.currentBook.locations.generate(每页的呈现字数)
+        // 默认每页呈现 700 字，根据页面宽度及字体大小调整页面呈现字数
+        // 这种分页调节不包括图片等信息
+        return this.currentBook.locations.generate(700 * (window.innerWidth / 375) * (this.currentFontSize / 17))
+      }).then(() => {
+        this.$store.dispatch('setIsProgressAvailable', true)
+        // 分页完成之后再次调用refreshLocation，保证progress有值
+        this.refreshLocation()
+      })
     },
     prevPage () {
       if (this.rendition) {
-        this.rendition.prev()
-        // const progress = this.currentBook.rendition.currentLocation()
-        // this.$store.dispatch('setCurrentBookProgress', progress)
+        this.rendition.prev().then(() => {
+          this.refreshLocation()
+        })
       }
     },
     nextPage () {
       if (this.rendition) {
-        this.rendition.next()
-        // const progress = this.currentBook.rendition.currentLocation()
-        // console.log(progress)
-        // this.$store.dispatch('setCurrentBookProgress', progress)
+        this.rendition.next().then(() => {
+          this.refreshLocation()
+        })
       }
     },
     toggleMenu (flag) {
