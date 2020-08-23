@@ -8,7 +8,13 @@ export default {
       'showBookIndexFlag',
       'fileName',
       'menuItemIndex',
-      'currentBook'
+      'currentBook',
+      'isProgressAvailable',
+      'currentFontSize',
+      'currentBookProgress',
+      'currentCfi',
+      'currentSection',
+      'timer'
     ])
   }
 }

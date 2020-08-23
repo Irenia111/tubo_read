@@ -19,8 +19,21 @@ export default {
     // 初始化阅读器设置
     this.$store.dispatch('initSetting')
     this.$store.dispatch('setFileName', bookName).then(() => {
-      this.renderBook()
+      this.$store.dispatch('initCurrentBook').then(() => {
+        this.renderBook()
+        this.bookTimer = setInterval(() => {
+          if (this.clock === 60) {
+            this.$store.dispatch('setTimer', this.timer + 1)
+            this.clock = 1
+          } else {
+            this.clock += 1
+          }
+        }, 1000)
+      })
     })
+  },
+  destroyed () {
+    clearInterval(this.bookTimer)
   },
   methods: {
     renderBook () {
@@ -53,14 +66,6 @@ export default {
       // 设置主题
       this.currentBook.rendition.themes.select(this.currentTheme.name)
       this.rendition.display()
-      // this.book.ready.then(() => {})
-      // rendition监听不了事件
-      // 是版本问题，降级就可以用了
-      // 降低版本之后，封面也出现了
-      // 重点是安装时锁定版本，package.json中不能有^，
-      // https://blog.csdn.net/weixin_45915752/article/details/105182059
-      // https://blog.csdn.net/qq_27036043/article/details/86664672
-      // 这个好像没有什么用处https://zhuanlan.zhihu.com/p/86138298
       this.rendition.on('touchstart', e => {
         // changedTouches 一个数组，数组的length为手指数量，一个手指就是0号元素
         // clientX, clientY 当前点击位置
@@ -88,11 +93,7 @@ export default {
       })
       // 字体设置
       // 将字体文件加载入iframe的styleSheet中
-      // 此处需要注意，因为styleSheet以link的形式加入，需要配置文件的url，不能采用本地静态资源，故字体文件存放在nginx服务器
       this.rendition.hooks.content.register((contents) => {
-        // 不能直接写assets的路径
-        // 可以通过addStyleSheet的源码了解
-        // contents.addStylesheet('../../assets/fonts/daysOne.css')
         const baseUrl = 'http://127.0.0.1:8081/fonts/'
         contents.addStylesheet(baseUrl + 'cabin.css')
         contents.addStylesheet(baseUrl + 'daysOne.css')
@@ -103,11 +104,16 @@ export default {
     prevPage () {
       if (this.rendition) {
         this.rendition.prev()
+        // const progress = this.currentBook.rendition.currentLocation()
+        // this.$store.dispatch('setCurrentBookProgress', progress)
       }
     },
     nextPage () {
       if (this.rendition) {
         this.rendition.next()
+        // const progress = this.currentBook.rendition.currentLocation()
+        // console.log(progress)
+        // this.$store.dispatch('setCurrentBookProgress', progress)
       }
     },
     toggleMenu (flag) {
@@ -120,7 +126,9 @@ export default {
     return {
       timeStamp: 0,
       touchStartX: 0,
-      touchEndX: 0
+      touchEndX: 0,
+      bookTimer: null,
+      clock: 1
     }
   }
 }

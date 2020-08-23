@@ -1,4 +1,7 @@
 export default {
+  initCurrentBook: ({ commit }) => {
+    return commit('INIT_CURRENTBOOK')
+  },
   setFileName: ({ commit }, newName) => {
     return commit('SET_FILENAME', newName)
   },
@@ -19,5 +22,20 @@ export default {
   },
   setCurrentBook: ({ commit }, currentBook) => {
     return commit('SET_CURRENTBOOK', currentBook)
+  },
+  setIsProgressAvailable: ({ commit }, flag) => {
+    return commit('SET_ISPROGRESSAVAILABLE', flag)
+  },
+  setCurrentBookProgress: ({ commit }, newProgress) => {
+    return commit('SET_CURRENTBOOKPROGRESS', newProgress)
+  },
+  setCurrentCfi: ({ commit }, newCfi) => {
+    return commit('SET_CURRENTCFI', newCfi)
+  },
+  setCurrentSection: ({ commit }, newSection) => {
+    return commit('SET_CURRENTSECTION', newSection)
+  },
+  setTimer: ({ commit }, time) => {
+    return commit('SET_TIMER', time)
   }
 }

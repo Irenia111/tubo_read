@@ -28,7 +28,6 @@ const setting = {
         state.currentTheme = JSON.parse(JSON.stringify(themeMap.themeList[themeMap.defaultThemeIndex]))
         saveToLocal(state)
       } else {
-        // console.log(file)
         state.currentFontSize = JSON.parse(file).currentFontSize
         state.currentFontFamily = JSON.parse(file).currentFontFamily
         state.currentTheme = JSON.parse(file).currentTheme

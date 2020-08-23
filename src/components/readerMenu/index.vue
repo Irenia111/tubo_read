@@ -69,7 +69,7 @@ export default {
   .menu-item-wrapper{
     z-index: 100;
     position: absolute;
-    bottom: px2rem(48);
+    bottom: 46px;
     left: 0;
     width: 100%;
     height: px2rem(90);
@@ -90,7 +90,7 @@ export default {
     align-items: center;
     justify-content: space-around;
     width: 100%;
-    height: px2rem(48);
+    height: 48px;
     transition: transform 0.25s ease-in;
     padding: 0 px2rem(8);
     background: white;

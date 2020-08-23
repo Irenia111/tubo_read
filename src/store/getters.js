@@ -11,7 +11,12 @@ const getters = {
   currentFontFamily: state => state.setting.currentFontFamily,
   currentTheme: state => state.setting.currentTheme,
   themeList: state => state.setting.themeList,
-  currentBook: state => state.book.currentBook
+  currentBook: state => state.book.currentBook,
+  isProgressAvailable: state => state.book.isProgressAvailable,
+  currentBookProgress: state => state.book.currentBookProgress,
+  currentSection: state => state.book.currentSection,
+  currentCfi: state => state.book.currentCfi,
+  timer: state => state.book.timer
 }
 
 export default getters
