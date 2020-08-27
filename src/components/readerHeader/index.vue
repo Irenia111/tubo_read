@@ -35,7 +35,7 @@ export default {
 <style lang="scss" scoped>
   @import "./src/assets/style/global";
   .header-wrapper{
-    z-index: 200;
+    z-index: 100;
     position: absolute;
     top: 0;
     left: 0;

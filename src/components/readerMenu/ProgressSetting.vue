@@ -53,7 +53,7 @@ export default {
     },
     onProgressChange (value) {
       const cfi = this.currentBook.locations.cfiFromPercentage(value / 100)
-      this.display(cfi, this.refreshLocation())
+      this.display(cfi)
     },
     onProgressInput (value) {
       this.updateBg(value)
@@ -76,7 +76,6 @@ export default {
       const sectionInfo = this.currentBook.section(this.currentSection)
       if (sectionInfo && sectionInfo.href) {
         this.display(sectionInfo.href, () => {
-          this.refreshLocation()
           this.updateBg(this.currentBookProgress)
         })
       }

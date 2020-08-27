@@ -48,16 +48,15 @@ export default {
   components: { FontFamilySetting, BookIndex, ProgressSetting, ThemeSetting, FontSizeSetting },
   methods: {
     showBookIndex () {
-      this.$store.dispatch('setShowMenuFlag', !this.showMenuFlag)
-      this.$store.dispatch('setShowBookIndexFlag', !this.showBookIndexFlag)
+      this.$store.dispatch('setShowBookIndexFlag', true)
     },
     showMenuItem (itemIndex) {
       this.$store.dispatch('setShowMenuItemFlag', true)
       this.$store.dispatch('setMenuItemIndex', itemIndex)
     },
     hideMenuItem () {
-      // 隐藏menu之后，将menuItem进行隐藏
       this.$store.dispatch('setShowMenuItemFlag', false)
+      this.$store.dispatch('setShowBookIndexFlag', false)
       this.$store.dispatch('setMenuItemIndex', -1)
     }
   }

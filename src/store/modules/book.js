@@ -1,14 +1,16 @@
+
 function saveToLocal (state) {
+  const name = state.fileName
   const record = JSON.parse(JSON.stringify(
     {
-      fileName: state.fileName,
       currentBookProgress: state.currentBookProgress,
       currentSection: state.currentSection,
       currentCfi: state.currentCfi,
-      timer: state.timer
+      timer: state.timer,
+      bookmark: state.bookmark
     }
   ))
-  window.localStorage.setItem('currentBookRecord', JSON.stringify(record))
+  window.localStorage.setItem(name, JSON.stringify(record))
 }
 
 const book = {
@@ -24,24 +26,31 @@ const book = {
     currentBookProgress: 0,
     currentCfi: null,
     currentSection: 0,
-    timer: 0
+    timer: 0,
+    cover: null,
+    navigation: null,
+    metadata: null,
+    bookmark: [],
+    offsetY: 0,
+    isBookmark: false
   },
   mutations: {
     INIT_CURRENTBOOK: (state) => {
-      const file = window.localStorage.getItem('currentBookRecord')
+      const name = state.fileName
+      const file = window.localStorage.getItem(name)
       if (file == null) {
-        state.fileName = ''
         state.currentBookProgress = 0
         state.currentSection = 0
         state.currentCfi = 0
         state.timer = 0
+        state.bookmark = []
         saveToLocal(state)
       } else {
-        state.fileName = JSON.parse(file).fileName
         state.currentBookProgress = JSON.parse(file).currentBookProgress
         state.currentSection = JSON.parse(file).currentSection
         state.currentCfi = JSON.parse(file).currentCfi
         state.timer = JSON.parse(file).timer
+        state.bookmark = JSON.parse(file).bookmark
       }
     },
     SET_FILENAME: (state, fileName) => {
@@ -84,6 +93,29 @@ const book = {
     SET_TIMER: (state, time) => {
       state.timer = time
       saveToLocal(state)
+    },
+    SET_NAVIGATION: (state, navigation) => {
+      state.navigation = navigation
+    },
+    SET_COVER: (state, cover) => {
+      state.cover = cover
+    },
+    SET_METADATA: (state, metadata) => {
+      state.metadata = metadata
+    },
+    SET_OFFSETY: (state, offsetY) => {
+      state.offsetY = offsetY
+    },
+    ADD_BOOKMARK: (state, item) => {
+      state.bookmark.push(item)
+      saveToLocal(state)
+    },
+    REMOVE_BOOKMARK: (state, cfi) => {
+      state.bookmark = state.bookmark.filter(item => item.cfi !== cfi)
+      saveToLocal(state)
+    },
+    SET_ISBOOKMARK: (state, flag) => {
+      state.isBookmark = flag
     }
   }
 }

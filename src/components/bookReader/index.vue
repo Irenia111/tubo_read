@@ -1,6 +1,10 @@
 <template>
   <div class="book-reader-wrapper">
     <div id="reader"></div>
+    <div class="reader-mask"
+         @click="onMaskClick"
+         @touchmove="move"
+         @touchend="moveEnd"></div>
   </div>
 </template>
 
@@ -21,6 +25,97 @@ export default {
     this.$store.dispatch('initCurrentBook')
     this.$store.dispatch('setFileName', bookName).then(() => {
       this.renderBook()
+      this.startBookTimer()
+    })
+  },
+  beforeDestroy () {
+    clearInterval(this.bookTimer)
+  },
+  methods: {
+    renderBook () {
+      const baseUrl = 'http://127.0.0.1:8081/epub/'
+      const fileType = '.epub'
+      const url = baseUrl + this.fileName + fileType
+      this.book = new Epub(url)
+      this.$store.dispatch('setCurrentBook', this.book).then(() => {
+        this.rendition = this.book.renderTo('reader', {
+          width: innerWidth,
+          height: innerHeight,
+          // 如果flow是下滑模式 'scrolled-doc'那么this.nextPage()就是上下章的切换
+          // flow: 'scrolled-doc',
+          flow: 'paginated',
+          // 兼容微信
+          method: 'default'
+        })
+        const location = this.currentCfi
+        this.display(location, () => {
+          this.initBookReaderSetting()
+        })
+        // 因为手势监听无法和下拉书签兼容，所以采用蒙版
+        this.parseBook()
+        this.rendition.hooks.content.register((contents) => {
+          const baseUrl = 'http://127.0.0.1:8081/fonts/'
+          contents.addStylesheet(baseUrl + 'cabin.css')
+          contents.addStylesheet(baseUrl + 'daysOne.css')
+          contents.addStylesheet(baseUrl + 'montserrat.css')
+          contents.addStylesheet(baseUrl + 'tangerine.css')
+        })
+      })
+      this.currentBook.ready.then(() => {
+        return this.currentBook.locations.generate(700 * (window.innerWidth / 375) * (this.currentFontSize / 17))
+      }).then(() => {
+        this.$store.dispatch('setIsProgressAvailable', true)
+        this.refreshLocation()
+      })
+    },
+    move (e) {
+      let offsetY = 0
+      if (this.firstOffsetY) {
+        offsetY = e.changedTouches[0].clientY - this.firstOffsetY
+        this.$store.dispatch('setOffsetY', offsetY)
+      } else {
+        this.firstOffsetY = e.changedTouches[0].clientY
+      }
+      // 阻止默认事件，这样下拉的时候可以防止微信浏览器的bug
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    moveEnd () {
+      // touch结束时，需要将offsetY值归零.将记录的firstOffsetY值置空
+      this.$store.dispatch('setOffsetY', 0)
+      this.firstOffsetY = null
+    },
+    onMaskClick (e) {
+      const offsetX = e.offsetX
+      const width = window.innerWidth
+      if (offsetX > 0 && offsetX < width * 0.3) {
+        this.prevPage()
+      } else if (offsetX > 0 && offsetX > width * 0.7) {
+        this.nextPage()
+      } else {
+        this.toggleMenu(!this.showMenuFlag)
+      }
+    },
+    prevPage () {
+      if (this.rendition) {
+        this.rendition.prev().then(() => {
+          this.refreshLocation()
+        })
+      }
+    },
+    nextPage () {
+      if (this.rendition) {
+        this.rendition.next().then(() => {
+          this.refreshLocation()
+        })
+      }
+    },
+    toggleMenu (flag) {
+      // console.log(flag)
+      this.$store.dispatch('setShowMenuFlag', flag)
+      this.$store.dispatch('setShowFontFamilyFlag', false)
+    },
+    startBookTimer () {
       this.bookTimer = setInterval(() => {
         if (this.clock === 60) {
           this.$store.dispatch('setTimer', this.timer + 1)
@@ -29,44 +124,9 @@ export default {
           this.clock += 1
         }
       }, 1000)
-    })
-  },
-  beforeDestroy () {
-    clearInterval(this.bookTimer)
-  },
-  methods: {
-    renderBook () {
-      // 要使用http协议！
-      const baseUrl = 'http://127.0.0.1:8081/epub/'
-      const fileType = '.epub'
-      const url = baseUrl + this.fileName + fileType
-      this.book = new Epub(url)
-      // 此时书籍尚未解析，所以不能设置字体大小
-      // this.book.rendition.themes.fontSize()
-      this.$store.dispatch('setCurrentBook', this.book)
-      // console.log(this.currentBook)
-      this.rendition = this.book.renderTo('reader', {
-        width: innerWidth,
-        height: innerHeight,
-        // 如果flow是下滑模式 'scrolled-doc'那么this.nextPage()就是上下章的切换
-        // flow: 'scrolled-doc',
-        flow: 'paginated',
-        // 兼容微信
-        method: 'default'
-      })
-      const location = this.currentCfi
-      this.display(location, () => {
-        // 设置渲染字体大小
-        this.currentBook.rendition.themes.fontSize(this.currentFontSize.fontSize + 'px')
-        // 设置字体
-        this.currentBook.rendition.themes.font(this.currentFontFamily.fontName)
-        // 注册主题
-        this.themeList.forEach(item => {
-          this.currentBook.rendition.themes.register(item.name, item.style)
-        })
-        // 设置主题
-        this.currentBook.rendition.themes.select(this.currentTheme.name)
-      })
+    },
+    /*
+    initGesture () {
       this.rendition.on('touchstart', e => {
         // changedTouches 一个数组，数组的length为手指数量，一个手指就是0号元素
         // clientX, clientY 当前点击位置
@@ -92,54 +152,50 @@ export default {
       this.rendition.on('click', e => {
         this.toggleMenu(!this.showMenuFlag)
       })
-      // 字体设置
-      // 将字体文件加载入iframe的styleSheet中
-      this.rendition.hooks.content.register((contents) => {
-        const baseUrl = 'http://127.0.0.1:8081/fonts/'
-        contents.addStylesheet(baseUrl + 'cabin.css')
-        contents.addStylesheet(baseUrl + 'daysOne.css')
-        contents.addStylesheet(baseUrl + 'montserrat.css')
-        contents.addStylesheet(baseUrl + 'tangerine.css')
-      })
-      // 分页需要书籍加载
-      this.currentBook.ready.then(() => {
-        //  this.currentBook.locations.generate(每页的呈现字数)
-        // 默认每页呈现 700 字，根据页面宽度及字体大小调整页面呈现字数
-        // 这种分页调节不包括图片等信息
-        return this.currentBook.locations.generate(700 * (window.innerWidth / 375) * (this.currentFontSize / 17))
-      }).then(() => {
-        this.$store.dispatch('setIsProgressAvailable', true)
-        // 分页完成之后再次调用refreshLocation，保证progress有值
-        this.refreshLocation()
-      })
     },
-    prevPage () {
-      if (this.rendition) {
-        this.rendition.prev().then(() => {
-          this.refreshLocation()
+     */
+    parseBook () {
+      this.book.loaded.cover.then(cover => {
+        this.book.archive.createUrl(cover).then(url => {
+          this.$store.dispatch('setCover', url)
         })
+      })
+      this.book.loaded.metadata.then(metadata => {
+        this.$store.dispatch('setMetadata', metadata)
+      })
+
+      function flatten (array) {
+        return [].concat(...array.map(item => [].concat(item, ...flatten(item.subitems))))
       }
-    },
-    nextPage () {
-      if (this.rendition) {
-        this.rendition.next().then(() => {
-          this.refreshLocation()
+
+      this.book.loaded.navigation.then(nav => {
+        const navItem = flatten(nav.toc)
+        function find (item, level = 0) {
+          return !item.parent ? level : find(navItem.filter(parentItem => parentItem.id === item.parent)[0], ++level)
+        }
+        navItem.forEach(item => {
+          item.level = find(item)
         })
-      }
+        this.$store.dispatch('setNavigation', navItem)
+      })
     },
-    toggleMenu (flag) {
-      // console.log(flag)
-      this.$store.dispatch('setShowMenuFlag', flag)
-      this.$store.dispatch('setShowFontFamilyFlag', false)
+    initBookReaderSetting () {
+      this.currentBook.rendition.themes.fontSize(this.currentFontSize.fontSize + 'px')
+      this.currentBook.rendition.themes.font(this.currentFontFamily.fontName)
+      this.themeList.forEach(item => {
+        this.currentBook.rendition.themes.register(item.name, item.style)
+      })
+      this.currentBook.rendition.themes.select(this.currentTheme.name)
     }
   },
   data () {
     return {
-      timeStamp: 0,
       touchStartX: 0,
       touchEndX: 0,
       bookTimer: null,
-      clock: 1
+      clock: 1,
+      // firstOffsetY初始值为空
+      firstOffsetY: null
     }
   }
 }
@@ -153,6 +209,14 @@ export default {
       width: 100%;
       height: 100%;
     }
+    .reader-mask{
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: transparent;
+      z-index: 50;
+      width: 100%;
+      height: 100%;
+    }
   }
-
 </style>

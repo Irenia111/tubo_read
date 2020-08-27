@@ -37,5 +37,26 @@ export default {
   },
   setTimer: ({ commit }, time) => {
     return commit('SET_TIMER', time)
+  },
+  setCover: ({ commit }, cover) => {
+    return commit('SET_COVER', cover)
+  },
+  setNavigation: ({ commit }, navigation) => {
+    return commit('SET_NAVIGATION', navigation)
+  },
+  setMetadata: ({ commit }, metadata) => {
+    return commit('SET_METADATA', metadata)
+  },
+  addBookmark: ({ commit }, item) => {
+    return commit('ADD_BOOKMARK', item)
+  },
+  removeBookmark: ({ commit }, cfi) => {
+    return commit('REMOVE_BOOKMARK', cfi)
+  },
+  setOffsetY: ({ commit }, offsetY) => {
+    return commit('SET_OFFSETY', offsetY)
+  },
+  setIsBookmark: ({ commit }, flag) => {
+    return commit('SET_ISBOOKMARK', flag)
   }
 }

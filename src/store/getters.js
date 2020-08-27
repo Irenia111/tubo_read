@@ -16,7 +16,13 @@ const getters = {
   currentBookProgress: state => state.book.currentBookProgress,
   currentSection: state => state.book.currentSection,
   currentCfi: state => state.book.currentCfi,
-  timer: state => state.book.timer
+  timer: state => state.book.timer,
+  metadata: state => state.book.metadata,
+  navigation: state => state.book.navigation,
+  cover: state => state.book.cover,
+  isBookmark: state => state.book.isBookmark,
+  bookmark: state => state.book.bookmark,
+  offsetY: state => state.book.offsetY
 }
 
 export default getters
