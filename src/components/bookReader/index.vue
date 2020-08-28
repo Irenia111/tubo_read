@@ -9,6 +9,7 @@
 </template>
 
 <script>
+// http://localhost:8080/#/readerView/Laws|2016_Book_ImplementationOfEUReadmission
 import Epub from 'epubjs'
 import bookMixins from '../../mixins/bookMixins'
 import settingMixins from '../../mixins/settingMixins'
@@ -22,10 +23,11 @@ export default {
     const bookName = url.split('|').join('/')
     // 初始化阅读器设置
     this.$store.dispatch('initSetting')
-    this.$store.dispatch('initCurrentBook')
     this.$store.dispatch('setFileName', bookName).then(() => {
       this.renderBook()
       this.startBookTimer()
+      // 初始化当前书本数据
+      this.$store.dispatch('initCurrentBook')
     })
   },
   beforeDestroy () {
@@ -214,7 +216,7 @@ export default {
       top: 0;
       left: 0;
       background: transparent;
-      z-index: 50;
+      z-index: 80;
       width: 100%;
       height: 100%;
     }

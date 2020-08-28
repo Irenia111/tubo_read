@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/readerView'
+    redirect: '/store'
   },
   {
     path: '/readerView',
@@ -16,6 +16,17 @@ const routes = [
       path: ':fileName',
       // 动态路由
       component: () => import(/* webpackChunkName: "about" */ '../components/bookReader/index.vue')
+    }]
+  },
+  {
+    path: '/store',
+    name: 'Store',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Store/index'),
+    redirect: '/store/home',
+    children: [{
+      // 相对路径
+      path: 'home',
+      component: () => import(/* webpackChunkName: "about" */ '../components/store/StoreHome.vue')
     }]
   }
 ]

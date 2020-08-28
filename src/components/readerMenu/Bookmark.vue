@@ -181,7 +181,7 @@ export default {
     top: px2rem(-40);
     margin-bottom: px2rem(5);
     left: 0;
-    z-index: 100;
+    z-index: 40;
     width: 100%;
     height: px2rem(30);
     .ebook-bookmark-text-wrapper {

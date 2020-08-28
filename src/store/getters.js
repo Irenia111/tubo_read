@@ -22,7 +22,9 @@ const getters = {
   cover: state => state.book.cover,
   isBookmark: state => state.book.isBookmark,
   bookmark: state => state.book.bookmark,
-  offsetY: state => state.book.offsetY
+  offsetY: state => state.book.offsetY,
+  homeOffsetY: state => state.home.homeOffsetY,
+  searchOffsetY: state => state.home.searchOffsetY
 }
 
 export default getters

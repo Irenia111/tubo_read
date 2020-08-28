@@ -36,8 +36,9 @@ const book = {
   },
   mutations: {
     INIT_CURRENTBOOK: (state) => {
-      const name = state.fileName
+      const name = state.fileName.toString()
       const file = window.localStorage.getItem(name)
+      console.log(file)
       if (file == null) {
         state.currentBookProgress = 0
         state.currentSection = 0
@@ -55,7 +56,9 @@ const book = {
     },
     SET_FILENAME: (state, fileName) => {
       state.fileName = fileName
-      saveToLocal(state)
+      // 这里不需要调用本地存储
+      // 因为存储的名称由fileName确定
+      // saveToLocal(state)
     },
     SET_SHOWMENUFLAG: (state, flag) => {
       state.showMenuFlag = flag
