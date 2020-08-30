@@ -4,7 +4,8 @@ export default {
   computed: {
     ...mapGetters([
       'homeOffsetY',
-      'searchOffsetY'
+      'searchOffsetY',
+      'flapCardVisible'
     ])
   }
 }

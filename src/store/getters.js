@@ -24,7 +24,8 @@ const getters = {
   bookmark: state => state.book.bookmark,
   offsetY: state => state.book.offsetY,
   homeOffsetY: state => state.home.homeOffsetY,
-  searchOffsetY: state => state.home.searchOffsetY
+  searchOffsetY: state => state.home.searchOffsetY,
+  flapCardVisible: state => state.home.flapCardVisible
 }
 
 export default getters

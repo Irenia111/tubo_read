@@ -1,6 +1,7 @@
 <template>
   <div class="store-home">
     <store-home-header />
+    <flap-card />
     <scroll @onScroll="onscroll" :top="scrollTop" ref="scroll">
       <div>1111111111111111111111111</div>
       <div>00000000000</div>
@@ -47,9 +48,10 @@
 import StoreHomeHeader from './StoreHomeHeader'
 import Scroll from '../common/Scroll'
 import homeMixins from '../../mixins/homeMixins'
+import FlapCard from '../common/FlapCard'
 export default {
   name: 'StoreHome',
-  components: { Scroll, StoreHomeHeader },
+  components: { FlapCard, Scroll, StoreHomeHeader },
   mixins: [homeMixins],
   data () {
     return {

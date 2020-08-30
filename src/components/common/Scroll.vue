@@ -27,7 +27,7 @@ export default {
       this.$emit('onScroll', offsetY)
     },
     scrollTo (x, y) {
-      // 这块是个啥功能
+      // 滚动条滚动至某位置
       this.$refs.scrollWrapper.scrollTo(x, y)
     },
     refresh () {

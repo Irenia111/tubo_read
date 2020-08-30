@@ -6,12 +6,14 @@
           <div class="title-text-wrapper">
             <span class="title-text title">书城</span>
           </div>
-          <div class="title-icon-shake-wrapper">
+          <div class="title-icon-shake-wrapper" @click="showFlapCard">
             <span class="icon-shake icon"></span>
           </div>
         </div>
       </transition>
-      <div class="title-icon-back-wrapper" :class="{'hide-title': !titleVisible}">
+      <div class="title-icon-back-wrapper"
+           @click="back"
+           :class="{'hide-title': !titleVisible}">
         <span class="icon-back icon"></span>
       </div>
       <div class="search-bar-input-wrapper" :class="{'hide-title': !titleVisible}">
@@ -27,13 +29,16 @@
         </div>
       </div>
     </div>
+    <hot-search-list v-show="hotSearchVisible" ref="hotSearch" />
   </div>
 </template>
 
 <script>
 import homeMixins from '../../mixins/homeMixins'
+import HotSearchList from './HotSearchList'
 export default {
   name: 'StoreHomeHeader',
+  components: { HotSearchList },
   mixins: [homeMixins],
   watch: {
     homeOffsetY (v) {
@@ -44,18 +49,58 @@ export default {
         this.showTitle()
         this.hideShadow()
       }
+    },
+    searchOffsetY (offsetY) {
+      if (offsetY > 0) {
+        this.showShadow()
+      } else {
+        this.hideShadow()
+      }
     }
   },
   data () {
     return {
       titleVisible: true,
       shadowVisible: true,
-      searchText: ''
+      searchText: '',
+      hotSearchVisible: false
     }
   },
   methods: {
     showHotSearch () {
-      console.log('search')
+      this.hideTitle()
+      this.hideShadow()
+      this.hotSearchVisible = true
+      // 在组件挂载后开始渲染时，调用hotSearch的scrollTo方法，滑动到(0,0)位置，重置searchOffsetY
+      this.$nextTick(() => {
+        this.$refs.hotSearch.reset()
+      })
+    },
+    hideHotSearch () {
+      this.hotSearchVisible = false
+      // back之后的操作
+      if (this.offsetY > 0) {
+        this.hideTitle()
+        this.showShadow()
+      } else {
+        this.showTitle()
+        this.hideShadow()
+      }
+    },
+    back () {
+      if (this.offsetY > 0) {
+        this.showShadow()
+      } else {
+        this.hideShadow()
+      }
+      if (this.hotSearchVisible) {
+        this.hideHotSearch()
+      } else {
+        this.$router.push('/store/shelf')
+      }
+    },
+    showFlapCard () {
+      this.$store.dispatch('setFlapCardVisible', true)
     },
     hideTitle () {
       this.titleVisible = false
