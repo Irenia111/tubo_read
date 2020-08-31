@@ -23,11 +23,37 @@ const routes = [
     name: 'Store',
     component: () => import(/* webpackChunkName: "about" */ '../views/Store/index'),
     redirect: '/store/home',
-    children: [{
-      // 相对路径
-      path: 'home',
-      component: () => import(/* webpackChunkName: "about" */ '../components/store/StoreHome.vue')
-    }]
+    children: [
+      {
+        // 相对路径
+        path: 'home',
+        component: () => import(/* webpackChunkName: "about" */ '../components/store/StoreHome.vue')
+      }
+      /*
+      {
+        // 相对路径
+        path: 'list',
+        component: () => import('../components/store/StoreList.vue')
+      },
+      {
+        path: 'detail',
+        component: () => import('../components/store/StoreDetail.vue')
+      },
+      {
+        path: 'shelf',
+        component: () => import('../components/store/StoreShelf.vue')
+      },
+      {
+        path: 'category',
+        component: () => import('../components/store/StoreCategory.vue')
+      },
+      {
+        path: 'speaking',
+        component: () => import('../components/store/StoreSpeaking.vue')
+      }
+
+      */
+    ]
   }
 ]
 

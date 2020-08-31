@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { realPx } from '../../utils/utils'
 
 export default {
@@ -55,7 +55,7 @@ export default {
       flex: 1;
       text-align: right;
       font-weight: bold;
-      color: #409EFF;
+      color: #40a9ff;
     }
   }
   .hot-search-list {

@@ -1,0 +1,88 @@
+@import "./style/global";
+
+// 烟火动画颜色变量
+// 烟火动画纯底色
+$color-green: rgb(59, 201, 22);
+$color-pink: rgb(255, 102, 159);
+$color-blue: rgb(74, 171, 255);
+$color-yellow: rgb(255, 198, 102);
+// 烟火动画半透明底色
+$color-green-transparent: rgba(59, 201, 22, .5);
+$color-pink-transparent: rgba(255, 102, 159, .5);
+$color-blue-transparent: rgba(74, 171, 255, .5);
+$color-yellow-transparent: rgba(255, 198, 102, .5);
+
+// 烟火动画每个点的运动轨迹数组+颜色设置
+// startX、startY 起始位置
+// endX、endY 结束位置
+// width、height 烟火的大小
+// background 烟火颜色
+$moves: (
+        (startX: 0, startY: 0, endX: 0, endY: 55, width: 6, height: 6, background: $color-green),
+        (startX: 0, startY: 0, endX: 15, endY: 60, width: 4, height: 4, background: $color-pink-transparent),
+        (startX: 0, startY: 0, endX: 35, endY: 45, width: 4, height: 4, background: $color-blue-transparent),
+        (startX: 0, startY: 0, endX: 50, endY: 25, width: 6, height: 6, background: $color-yellow),
+        (startX: 0, startY: 0, endX: 60, endY: 0, width: 2, height: 2, background: $color-pink-transparent),
+        (startX: 0, startY: 0, endX: 50, endY: -25, width: 6, height: 6, background: $color-blue),
+        (startX: 0, startY: 0, endX: 40, endY: -30, width: 3, height: 3, background: $color-green-transparent),
+        (startX: 0, startY: 0, endX: 20, endY: -55, width: 5, height: 5, background: $color-pink),
+        (startX: 0, startY: 0, endX: 5, endY: -45, width: 4, height: 4, background: $color-green-transparent),
+        (startX: 0, startY: 0, endX: -20, endY: -50, width: 2, height: 2, background: $color-pink-transparent),
+        (startX: 0, startY: 0, endX: -40, endY: -50, width: 2, height: 2, background: $color-green-transparent),
+        (startX: 0, startY: 0, endX: -55, endY: -30, width: 4, height: 4, background: $color-blue),
+        (startX: 0, startY: 0, endX: -55, endY: -10, width: 3, height: 3, background: $color-yellow-transparent),
+        (startX: 0, startY: 0, endX: -55, endY: -5, width: 3, height: 3, background: $color-green-transparent),
+        (startX: 0, startY: 0, endX: -35, endY: -7, width: 2, height: 2, background: $color-pink-transparent),
+        (startX: 0, startY: 0, endX: -45, endY: 10, width: 4, height: 4, background: $color-yellow-transparent),
+        (startX: 0, startY: 0, endX: -50, endY: 25, width: 6, height: 6, background: $color-pink),
+        (startX: 0, startY: 0, endX: -40, endY: 35, width: 4, height: 4, background: $color-green-transparent)
+);
+
+//设置烟火点的样式及动画
+@mixin move($index) {
+  // 从$moves数组中取得$index对应item
+  $item: nth($moves, $index);
+  // 为每个烟火点的动画命名
+  $keyframesName: "move" + $index;
+  // 动画时长、类型、间隔
+  $animationTime: .7s;
+  $animationType: linear;
+  $animationIterator: 3;
+  // 动画结束后回到初始状态
+  $animationFillMode: backwards;
+  // 设置烟火点的大小、背景及位置
+  $width: map-get($item, width);
+  $height: map-get($item, height);
+  $backgroud: map-get($item, background);
+  $startX: map-get($item, startX);
+  $startY: map-get($item, startY);
+  $endX: map-get($item, endX);
+  $endY: map-get($item, endY);
+
+  width: px2rem($width);
+  height: px2rem($height);
+  background: $backgroud;
+
+  animation: #{$keyframesName} $animationTime $animationType $animationIterator $animationFillMode;
+  @keyframes #{$keyframesName} {
+    0% {
+      transform: translate3d(px2rem($startX), px2rem($startY), 0) scale(0);
+      opacity: 0;
+    }
+    50% {
+      // 移动到一半
+      transform: translate3d(px2rem($endX * 0.5), px2rem($endY * 0.5), 0) scale(.5);
+      opacity: 1;
+    }
+    90% {
+      // 移动到结束位置
+      transform: translate3d(px2rem($endX), px2rem($endY), 0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      // 扩散+渐隐效果
+      transform: translate3d(px2rem($endX * 1.05), px2rem($endY * 1.05), 0) scale(1);
+      opacity: 0;
+    }
+  }
+}

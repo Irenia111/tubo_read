@@ -1,15 +1,8 @@
 @import "reset";
+@import "mixins";
+@import "transitions";
+@import "home";
 
-$animationTime: 0.15s;
-$animationType: ease-in-out;
-
-// 1rem = fontsize px
-// 1px = (1/fontsize) rem
-// 假定屏幕尺寸为375px
-$fontSize : 375 / 10;
-@function px2rem($px){
-  @return ($px/$fontSize)+rem
-}
 
 .icon {
   color: #666;
@@ -22,89 +15,6 @@ $fontSize : 375 / 10;
   font-weight: bold;
 }
 
-@mixin ellipsis {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-@mixin ellipsis2($line) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: $line;
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: keep-all;
-}
-
-@mixin center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@mixin center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@mixin absCenter {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-}
-
-@mixin columnLeft {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-@mixin left {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
 ._search-text{
   color: #40a9ff;
-}
-
-.slide-down-enter, .slide-down-leave-active{
-  transform: translate3d(0, -138px, 0);
-}
-// 下边栏分了两块，所以动画要改为两者的高度之和
-.slide-up-enter, .slide-up-leave-active{
-  transform: translate3d(0, 138px, 0);
-}
-
-.pop-up-enter, .pop-up-leave-active{
-  opacity: 0;
-  transform: translate3d(0, 100%, 0);
-}
-
-.fade-enter, .fade-leave-active{
-  opacity: 0;
-}
-
-.slide-in-enter, .slide-in-leave-active{
-  transform: translate3d(-100%, 0, 0);
-}
-
-.title-move-enter-active, .title-move-leave-active, .hot-search-move-enter-active, .hot-search-move-leave-active {
-  transition: all $animationTime $animationType;
-}
-.title-move-enter-to, .title-move-leave, .hot-search-move-enter-to, .hot-search-move-leave {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-
-.title-move-enter, .title-move-leave-to {
-  transform: translate3d(0, px2rem(10), 0);
-  opacity: 0;
 }
