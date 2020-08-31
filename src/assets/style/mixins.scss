@@ -35,6 +35,18 @@ $fontSize : 375 / 10;
   align-items: flex-start;
 }
 
+@mixin right {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+@mixin right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 @mixin absCenter {
   position: absolute;
   top: 0;

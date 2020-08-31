@@ -15,6 +15,9 @@
   font-weight: bold;
 }
 
+$color-blue: rgb(74, 171, 255);
+$color-blue-transparent: rgba(74, 171, 255, .5);
+
 ._search-text{
-  color: #40a9ff;
+  color: $color-blue;
 }

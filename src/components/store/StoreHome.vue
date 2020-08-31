@@ -6,8 +6,8 @@
       <div class="banner-wrapper">
         <div class="banner-img" :style="{backgroundImage:`url('${banner}')`}"></div>
       </div>
-      <guess-you-like :data="guessYouLike"></guess-you-like>
-      <recommend  class="recommend" :data="recommend"></recommend>
+      <guess-you-like class="guess-you-like" :data="guessYouLike"></guess-you-like>
+      <recommend class="recommend" :data="recommend"></recommend>
       <featured class="featured"
                 :data="featured"
                 titleText="精选" btnText="查看全部"
@@ -114,17 +114,8 @@ export default {
         background-size: 100% 100%;
       }
     }
-    .recommend {
-      margin-top: px2rem(20);
-    }
-    .featured {
-      margin-top: px2rem(20);
-    }
-    .category-list-wrapper {
-      margin-top: px2rem(20);
-    }
-    .categories {
-      margin-top: px2rem(20);
+    .guess-you-like, .recommend, .featured, .category-list-wrapper, .categories {
+      margin: px2rem(10) px2rem(4);
     }
   }
 </style>

@@ -22,23 +22,22 @@ const routes = [
     path: '/store',
     name: 'Store',
     component: () => import(/* webpackChunkName: "about" */ '../views/Store/index'),
-    redirect: '/store/home',
+    redirect: '/store/detail',
     children: [
       {
         // 相对路径
         path: 'home',
         component: () => import(/* webpackChunkName: "about" */ '../components/store/StoreHome.vue')
-      }
-      /*
+      },
       {
-        // 相对路径
         path: 'list',
-        component: () => import('../components/store/StoreList.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../components/store/StoreList.vue')
       },
       {
         path: 'detail',
-        component: () => import('../components/store/StoreDetail.vue')
-      },
+        component: () => import(/* webpackChunkName: "about" */ '../components/store/StoreDetail.vue')
+      }
+      /*,
       {
         path: 'shelf',
         component: () => import('../components/store/StoreShelf.vue')

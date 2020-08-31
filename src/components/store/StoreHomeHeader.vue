@@ -20,6 +20,7 @@
         <div class="search-bar-blank" :class="{'hide-title': !titleVisible}"></div>
         <div class="search-bar-input">
           <span class="icon-search icon"></span>
+          <!--keyup.13.exact 按下回车键-->
           <input class="input"
                  type="text"
                  placeholder="社科文学"
@@ -74,6 +75,15 @@ export default {
       // 在组件挂载后开始渲染时，调用hotSearch的scrollTo方法，滑动到(0,0)位置，重置searchOffsetY
       this.$nextTick(() => {
         this.$refs.hotSearch.reset()
+      })
+    },
+    search () {
+      // 在storeList页面搜索
+      this.$router.push({
+        path: '/store/list',
+        query: {
+          keyword: this.searchText
+        }
       })
     },
     hideHotSearch () {

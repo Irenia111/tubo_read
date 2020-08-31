@@ -3,8 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './assets/style/iconStyle.css'
-// 引入mock数据
-import './mock'
+// 引入mock数据 mock不支持blob对象的下载
+// 所以mock不支持电子书阅读器的资源下载
+// mock的电子书资源还是在nginx服务器上下载的
+// 采用本地调试模式启动的http服务模拟，在vue.config.js中设置
+// import './mock'
 
 Vue.config.productionTip = false
 

@@ -7,3 +7,20 @@ export function home () {
     url: `${process.env.VUE_APP_BASE_URL}/book/home`
   })
 }
+// 调用list的mock数据
+export function list () {
+  return axios({
+    methods: 'get',
+    url: `${process.env.VUE_APP_BASE_URL}/book/list`
+  })
+}
+
+export function detail (book) {
+  return axios({
+    methods: 'get',
+    url: `${process.env.VUE_APP_BOOK_URL}/book/detail`,
+    params: {
+      fileName: book.fileName
+    }
+  })
+}

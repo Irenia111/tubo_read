@@ -2,7 +2,7 @@
   <transition name="slide-down">
     <div class="header-wrapper" v-show="showMenuFlag">
       <div class="left-wrapper">
-        <div class="icon-wrapper">
+        <div class="icon-wrapper" @click.stop="back">
           <span class="icon-back"></span>
         </div>
       </div>
@@ -26,8 +26,10 @@ import bookMixins from '../../mixins/bookMixins'
 export default {
   name: 'readerHeader',
   mixins: [bookMixins],
-  mounted () {
-
+  methods: {
+    back () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>

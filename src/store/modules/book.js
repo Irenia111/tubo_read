@@ -38,7 +38,7 @@ const book = {
     INIT_CURRENTBOOK: (state) => {
       const name = state.fileName.toString()
       const file = window.localStorage.getItem(name)
-      console.log(file)
+      // console.log(file)
       if (file == null) {
         state.currentBookProgress = 0
         state.currentSection = 0
