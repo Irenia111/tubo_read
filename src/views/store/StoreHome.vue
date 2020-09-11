@@ -10,7 +10,8 @@
       <recommend class="recommend" :data="recommend"></recommend>
       <featured class="featured"
                 :data="featured"
-                titleText="精选" btnText="查看全部"
+                :titleText="$t('home.featured')"
+                :btnText="$t('home.seeAll')"
       ></featured>
       <div class="category-list-wrapper"
            v-for="(item, index) in categoryList" :key="index">
@@ -23,15 +24,15 @@
 </template>
 
 <script>
-import StoreHomeHeader from './StoreHomeHeader'
-import Scroll from '../common/Scroll'
+import StoreHomeHeader from '../../components/store/StoreHomeHeader'
+import Scroll from '../../components/common/Scroll'
 import homeMixins from '../../mixins/homeMixins'
-import FlapCard from '../common/FlapCard'
-import GuessYouLike from './GuessYouLike'
-import Recommend from './Recommend'
-import Featured from './Featured'
-import Category from './Category'
-import CategoryBook from './CategoryBook'
+import FlapCard from '../../components/store/FlapCard'
+import GuessYouLike from '../../components/store/GuessYouLike'
+import Recommend from '../../components/store/Recommend'
+import Featured from '../../components/store/Featured'
+import Category from '../../components/store/Category'
+import CategoryBook from '../../components/store/CategoryBook'
 // 引入mock数据
 import { home } from '../../api/store'
 

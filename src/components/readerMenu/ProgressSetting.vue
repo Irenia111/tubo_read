@@ -18,8 +18,8 @@
       </span>
     </div>
     <div class="progress-item">
-      <div class="item progress-timer">已读{{timeStamp}}</div>
-      <div class="item progress-des">{{isProgressAvailable ? '进度' + currentBookProgress + '%' : '加载中...'}}</div>
+      <div class="item progress-timer">{{$t('book.haveRead2') + timeStamp}}</div>
+      <div class="item progress-des">{{isProgressAvailable ? currentBookProgress + '%' : '加载中...'}}</div>
     </div>
   </div>
 </template>
@@ -39,7 +39,13 @@ export default {
     timeStamp: function () {
       const hour = Math.floor(this.timer / 60)
       const min = this.timer % 60
-      return hour > 0 ? `${hour}小时${min}分钟` : `${min}分钟`
+      let hourText = null
+      if (hour > 1) {
+        hourText = this.$t('book.hours')
+      } else {
+        hourText = this.$t('book.hour')
+      }
+      return hour > 0 ? `${hour}${hourText}  ${min}${this.$t('book.minutes')}` : `${min}${this.$t('book.minutes')}`
     }
   },
   mounted () {

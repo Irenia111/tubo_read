@@ -57,77 +57,53 @@ export const flapCardList = [
     rotateDegree: 0
   }
 ]
-const categoryList = {
-  computerScience: '计算机科学',
-  socialSciences: '社会科学',
-  economics: '经济学',
-  education: '教育学',
-  engineering: '工程学',
-  environment: '环境学',
-  geography: '地理学',
-  history: '历史学',
-  laws: '法学',
-  lifeSciences: '生命科学',
-  literature: '文学',
-  biomedicine: '生物医学',
-  businessandManagement: '工商管理',
-  earthSciences: '地球科学',
-  materialsScience: '材料科学',
-  mathematics: '数学',
-  medicineAndPublicHealth: '公共卫生',
-  philosophy: '哲学',
-  physics: '物理',
-  politicalScienceAndInternationalRelations: '国际关系',
-  psychology: '心理学',
-  statistics: '统计学'
-}
 
-export function categoryText (category) {
+export function categoryText (category, vue) {
   switch (category) {
     case 1:
-      return categoryList.computerScience
+      return vue.$t('category.computerScience')
     case 2:
-      return categoryList.socialSciences
+      return vue.$t('category.socialSciences')
     case 3:
-      return categoryList.economics
+      return vue.$t('category.economics')
     case 4:
-      return categoryList.education
+      return vue.$t('category.education')
     case 5:
-      return categoryList.engineering
+      return vue.$t('category.engineering')
     case 6:
-      return categoryList.environment
+      return vue.$t('category.environment')
     case 7:
-      return categoryList.geography
+      return vue.$t('category.geography')
     case 8:
-      return categoryList.history
+      return vue.$t('category.history')
     case 9:
-      return categoryList.laws
+      return vue.$t('category.laws')
     case 10:
-      return categoryList.lifeSciences
+      return vue.$t('category.lifeSciences')
     case 11:
-      return categoryList.literature
+      return vue.$t('category.literature')
     case 12:
-      return categoryList.biomedicine
+      return vue.$t('category.biomedicine')
     case 13:
-      return categoryList.businessandManagement
+      return vue.$t('category.businessandManagement')
     case 14:
-      return categoryList.earthSciences
+      return vue.$t('category.earthSciences')
     case 15:
-      return categoryList.materialsScience
+      return vue.$t('category.materialsScience')
     case 16:
-      return categoryList.mathematics
+      return vue.$t('category.mathematics')
     case 17:
-      return categoryList.medicineAndPublicHealth
+      return vue.$t('category.medicineAndPublicHealth')
     case 18:
-      return categoryList.philosophy
+      return vue.$t('category.philosophy')
     case 19:
-      return categoryList.physics
+      return vue.$t('category.physics')
     case 20:
-      return categoryList.politicalScienceAndInternationalRelations
+      return vue.$t('category.politicalScienceAndInternationalRelations')
     case 21:
-      return categoryList.psychology
+      return vue.$t('category.psychology')
     case 22:
-      return categoryList.statistics
+      return vue.$t('category.statistics')
   }
 }
 
@@ -204,4 +180,18 @@ export const categoryListNumber = {
   'PoliticalScienceAndInternationalRelations': 20,
   'Psychology': 21,
   'Statistics': 22
+}
+
+// 在shelf的末尾加入Add组件数据
+export function appendAddToShelf (list) {
+  list.push({
+    id: -1,
+    type:3
+  })
+
+  return  list
+}
+
+export function removeAddFromShelf(list) {
+  return list.filter(item => item.type !== 3)
 }

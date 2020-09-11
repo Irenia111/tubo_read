@@ -4,7 +4,7 @@
       <transition name="title-move">
         <div class="search-bar-title-wrapper" v-show="titleVisible">
           <div class="title-text-wrapper">
-            <span class="title-text title">书城</span>
+            <span class="title-text title">{{$t('home.title')}}</span>
           </div>
           <div class="title-icon-shake-wrapper" @click="showFlapCard">
             <span class="icon-shake icon"></span>
@@ -23,7 +23,7 @@
           <!--keyup.13.exact 按下回车键-->
           <input class="input"
                  type="text"
-                 placeholder="社科文学"
+                 :placeholder="$t('home.hint')"
                  v-model="searchText"
                  @click="showHotSearch"
                  @keyup.13.exact="search">
@@ -62,7 +62,7 @@ export default {
   data () {
     return {
       titleVisible: true,
-      shadowVisible: true,
+      shadowVisible: false,
       searchText: '',
       hotSearchVisible: false
     }
@@ -136,7 +136,7 @@ export default {
     z-index: 150;
     width: 100%;
     height: px2rem(94);
-    box-shadow: 0 px2rem(2) px2rem(2) px2rem(4) rgba(0, 0, 0, .05);
+    box-shadow: px2rem(-2) 0 px2rem(6) rgba(9, 9, 9, .1);
     &.hide-title {
       height: px2rem(52);
     }

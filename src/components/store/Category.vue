@@ -1,12 +1,12 @@
 <template>
   <div class="category">
-    <title-view label="分类" btn="查看全部" @onClick="showBookList"></title-view>
+    <title-view :label="$t('home.category')" :btn="$t('home.seeAll')" @onClick="showBookList"></title-view>
     <div class="category-list">
       <div class="category-item-wrapper" v-for="(item, index) in data" :key="index" @click="showBookCategory(item)">
         <div class="category-item">
           <div class="content-wrapper">
             <div class="title title-medium">{{categoryText(item.category)}}</div>
-            <div class="num sub-title-tiny">{{item.num + ' ' + '本书'}}</div>
+            <div class="num sub-title-tiny">{{item.num + ' ' + $t('home.books')}}</div>
           </div>
           <div class="img-wrapper">
             <div class="img-group">

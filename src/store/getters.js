@@ -10,7 +10,6 @@ const getters = {
   fontFamilyList: state => state.setting.fontFamilyList,
   currentFontFamily: state => state.setting.currentFontFamily,
   currentTheme: state => state.setting.currentTheme,
-  themeList: state => state.setting.themeList,
   currentBook: state => state.book.currentBook,
   isProgressAvailable: state => state.book.isProgressAvailable,
   currentBookProgress: state => state.book.currentBookProgress,
@@ -25,7 +24,13 @@ const getters = {
   offsetY: state => state.book.offsetY,
   homeOffsetY: state => state.home.homeOffsetY,
   searchOffsetY: state => state.home.searchOffsetY,
-  flapCardVisible: state => state.home.flapCardVisible
+  flapCardVisible: state => state.home.flapCardVisible,
+  isEditMode: state => state.home.isEditMode,
+  shelfList: state => state.home.shelfList,
+  shelfSelected: state => state.home.shelfSelected,
+  shelfTitleVisible: state => state.home.shelfTitleVisible,
+  shelfCategory: state => state.home.shelfCategory,
+  currentType: state => state.home.currentType
 }
 
 export default getters

@@ -21,27 +21,27 @@ const routes = [
   {
     path: '/store',
     name: 'Store',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Store/index'),
-    redirect: '/store/detail',
+    component: () => import(/* webpackChunkName: "about" */ '../views/store/index'),
+    redirect: '/store/shelf',
     children: [
       {
         // 相对路径
         path: 'home',
-        component: () => import(/* webpackChunkName: "about" */ '../components/store/StoreHome.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/store/StoreHome.vue')
       },
       {
         path: 'list',
-        component: () => import(/* webpackChunkName: "about" */ '../components/store/StoreList.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/store/StoreList.vue')
       },
       {
         path: 'detail',
-        component: () => import(/* webpackChunkName: "about" */ '../components/store/StoreDetail.vue')
-      }
-      /*,
+        component: () => import(/* webpackChunkName: "about" */ '../views/store/StoreDetail.vue')
+      },
       {
         path: 'shelf',
-        component: () => import('../components/store/StoreShelf.vue')
-      },
+        component: () => import('../views/store/StoreShelf.vue')
+      }
+      /*,
       {
         path: 'category',
         component: () => import('../components/store/StoreCategory.vue')

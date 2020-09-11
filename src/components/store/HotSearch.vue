@@ -12,7 +12,7 @@
         </div>
         <div class="hot-search-text-wrapper">
           <div class="text" ref="searchText">{{item.text}}</div>
-          <div class="num" v-if="item.num">{{item.num}}人搜索</div>
+          <div class="num" v-if="item.num">{{item.num + $t('home.peopleSearch')}}</div>
         </div>
       </div>
     </div>

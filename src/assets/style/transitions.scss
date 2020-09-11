@@ -1,3 +1,4 @@
+@import "mixins";
 $animationTime: 0.15s;
 $animationType: ease-in-out;
 
@@ -33,4 +34,49 @@ $animationType: ease-in-out;
 .title-move-enter, .title-move-leave-to {
   transform: translate3d(0, px2rem(10), 0);
   opacity: 0;
+}
+
+.shelf-search-move-enter, .shelf-search-move-leave-to {
+  transform: translate3d(0, px2rem(10), 0);
+  opacity: 0;
+}
+
+
+.dialog-fade-enter, .dialog-fade-leave-to, .popup-bg-fade-enter, .popup-bg-fade-leave-to{
+  opacity: 0;
+}
+
+.dialog-fade-enter-to, .dialog-fade-leave, .popup-bg-fade-enter-to, .popup-bg-fade-leave{
+  opacity: 1;
+}
+
+// 渐隐效果不好
+.dialog-fade-enter-active, .dialog-fade-leave-active, .popup-bg-fade-enter-active, .popup-bg-fade-leave-active{
+  transition: opacity 0.25s linear;
+}
+
+.popup-slide-in-enter, .popup-slide-in-leave-to{
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+}
+
+.popup-slide-in-enter-active, .popup-slide-in-leave-active{
+  transition: all 0.25s $animationType;
+}
+
+.toast-fade-enter{
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+}
+.toast-fade-leave {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.toast-fade-leave-to {
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
+}
+
+.toast-fade-enter-active, .toast-fade-leave-active{
+  transition: all 0.2s $animationType;
 }

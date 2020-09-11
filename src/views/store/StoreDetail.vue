@@ -13,31 +13,31 @@
                  :author="author"
                  :desc="desc"></book-info>
       <div class="book-detail-content-wrapper">
-        <div class="book-detail-content-title">{{detailText.copyright}}</div>
+        <div class="book-detail-content-title">{{$t('detail.copyright')}}</div>
         <div class="book-detail-content-list-wrapper">
           <div class="book-detail-content-row">
-            <div class="book-detail-content-label">{{detailText.publisher}}</div>
+            <div class="book-detail-content-label">{{$t('detail.publisher')}}</div>
             <div class="book-detail-content-text">{{publisher}}</div>
           </div>
           <div class="book-detail-content-row">
-            <div class="book-detail-content-label">{{detailText.category}}</div>
+            <div class="book-detail-content-label">{{$t('detail.category')}}</div>
             <div class="book-detail-content-text">{{categoryText}}</div>
           </div>
           <div class="book-detail-content-row">
-            <div class="book-detail-content-label">{{detailText.lang}}</div>
+            <div class="book-detail-content-label">{{$t('detail.lang')}}</div>
             <div class="book-detail-content-text">{{lang}}</div>
           </div>
           <div class="book-detail-content-row">
-            <div class="book-detail-content-label">{{detailText.ISBN}}</div>
+            <div class="book-detail-content-label">{{$t('detail.ISBN')}}</div>
             <div class="book-detail-content-text">{{isbn}}</div>
           </div>
         </div>
       </div>
       <div class="book-detail-content-wrapper">
-        <div class="book-detail-content-title">{{detailText.navigation}}</div>
+        <div class="book-detail-content-title">{{$t('detail.navigation')}}</div>
         <div class="book-detail-content-list-wrapper">
           <div class="loading-text-wrapper" v-if="!this.navigation">
-            <span class="loading-text">{{detailText.loading}}</span>
+            <span class="loading-text">{{$t('detail.loading')}}</span>
           </div>
           <div class="book-detail-content-item-wrapper">
             <div class="book-detail-content-item" v-for="(item, index) in flatNavigation" :key="index"
@@ -52,24 +52,26 @@
         </div>
       </div>
       <div class="book-detail-content-wrapper">
-        <div class="book-detail-content-title">{{detailText.trial}}</div>
+        <div class="book-detail-content-title">{{$t('detail.trial')}}</div>
         <div class="book-detail-content-list-wrapper">
           <div class="loading-text-wrapper" v-if="!this.displayed">
-            <span class="loading-text">{{detailText.loading}}</span>
+            <span class="loading-text">{{$t('detail.loading')}}</span>
           </div>
         </div>
         <div id="preview" v-show="this.displayed" ref="preview"></div>
       </div>
     </scroll>
     <div class="bottom-wrapper">
-      <div class="bottom-btn" @click.stop.prevent="readBook()">{{detailText.read}}</div>
-      <div class="bottom-btn" @click.stop.prevent="trialListening()">{{detailText.listen}}</div>
+      <div class="bottom-btn" @click.stop.prevent="readBook()">{{$t('detail.read')}}</div>
+      <div class="bottom-btn" @click.stop.prevent="trialListening()">{{$t('detail.listen')}}</div>
       <div class="bottom-btn" @click.stop.prevent="addOrRemoveShelf()">
         <span class="icon-check" v-if="inBookShelf"></span>
-        {{inBookShelf ? detailText.isAddedToShelf : detailText.addOrRemoveShelf}}
+        {{inBookShelf ? $t('detail.isAddedToShelf') : $t('detail.addOrRemoveShelf')}}
       </div>
     </div>
+    <!--
     <toast :text="toastText" ref="toast"></toast>
+    -->
   </div>
 </template>
 
@@ -77,33 +79,19 @@
 import DetailTitle from '../../components/detail/DetaiTitle'
 import BookInfo from '../../components/detail/BookInfo'
 import Scroll from '../../components/common/Scroll'
-import Toast from '../../components/common/Toast'
+// import Toast from '../../components/common/Toast'
 import { detail } from '../../api/store'
 import { px2rem, realPx } from '../../utils/utils'
 import Epub from 'epubjs'
 /* eslint-disable */
-const detailText = {
-  copyright: '版权',
-  navigation: '目录',
-  publisher: '出版社',
-  category: '分类',
-  ISBN: 'ISBN',
-  trial: '试读',
-  lang: '语言',
-  loading: '加载中...',
-  read: '阅读',
-  listen: '听书',
-  addOrRemoveShelf: '加入书架',
-  isAddedToShelf: '已加入书架'
-}
 global.ePub = Epub
 export default {
   name: 'StoreDetail',
   components: {
     DetailTitle,
     Scroll,
-    BookInfo,
-    Toast
+    BookInfo
+    // Toast
   },
   computed: {
     desc () {
@@ -162,8 +150,7 @@ export default {
       toastText: '',
       trialText: null,
       categoryText: null,
-      opf: null,
-      detailText: detailText
+      opf: null
     }
   },
   methods: {
@@ -171,7 +158,8 @@ export default {
     },
     showToast (text) {
       this.toastText = text
-      this.$refs.toast.show()
+      this.$toast({text: this.toastText}).show()
+      // this.$refs.toast.show()
     },
     readBook () {
       this.$router.push({
@@ -238,6 +226,7 @@ export default {
           fileName: this.fileName
         }).then(response => {
           if (response.status === 200 && response.data.error_code === 0 && response.data.data) {
+            // this.showToast(response.data.msg)
             const data = response.data.data
             this.bookItem = data
             this.cover = this.bookItem.cover
@@ -370,11 +359,14 @@ export default {
       left: 0;
       z-index: 120;
       display: flex;
+      align-items: center;
+      justify-content: space-around;
       width: 100%;
       height: px2rem(52);
       box-shadow: 0 px2rem(-2) px2rem(2) rgba(0, 0, 0, .1);
+      box-sizing: border-box;
+      padding: 0 px2rem(4);
       .bottom-btn {
-        flex: 1;
         color: $color-blue;
         font-weight: bold;
         font-size: px2rem(14);

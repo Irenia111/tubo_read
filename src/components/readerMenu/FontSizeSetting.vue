@@ -18,11 +18,7 @@
     </div>
     <div class="item-wrapper">
       <div class="item font-family-wrapper" @click="showFontFamilySetting()">
-        <span>字体设置</span>
-        <span class="icon-forward"></span>
-      </div>
-      <div class="item flow-wrapper">
-        <span>左右滑动</span>
+        <span>{{$t('book.selectFont')}}</span>
         <span class="icon-forward"></span>
       </div>
     </div>

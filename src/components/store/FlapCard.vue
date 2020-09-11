@@ -35,7 +35,7 @@
           <div class="content-author sub-title-medium">{{data ? data.author : ''}}</div>
           <div class="content-category">{{categoryText()}}</div>
         </div>
-        <div class="read-btn" @click.stop="showBookDetail(data)">立即阅读</div>
+        <div class="read-btn" @click.stop="showBookDetail(data)">{{$t('home.readNow')}}</div>
       </div>
     </div>
     <div class="close-btn-wrapper" @click="close">
@@ -233,7 +233,7 @@ export default {
     },
     categoryText () {
       if (this.data) {
-        return categoryText(this.data.category)
+        return categoryText(this.data.category, this)
       } else {
         return ''
       }

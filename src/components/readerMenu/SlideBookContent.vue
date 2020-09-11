@@ -5,10 +5,11 @@
         <span class="icon-search"></span>
         <input type="text"
                v-model="searchText"
+               :placeholder="$t('book.searchHint')"
                @keyup.enter.exact="search()"
                @click="showSearchPage"
         />
-        <span v-if="searchVisible" @click="hideSearchPage()">取消</span>
+        <span v-if="searchVisible" @click="hideSearchPage()">{{$t('book.cancel')}}</span>
       </div>
     </div>
     <div class="book-info" v-show="!searchVisible">
@@ -28,8 +29,8 @@
           <span>
             {{currentBookProgress}}%
           </span>
-          已读</div>
-        <div class="book-timer">已读{{timeStamp}}</div>
+          {{$t('book.haveRead2')}}</div>
+        <div class="book-timer">{{$t('book.haveRead2')}}{{timeStamp}}</div>
       </div>
     </div>
     <scroll class="slide-contents-list"
@@ -70,7 +71,13 @@ export default {
     timeStamp: function () {
       const hour = Math.floor(this.timer / 60)
       const min = this.timer % 60
-      return hour > 0 ? `${hour}小时${min}分钟` : `${min}分钟`
+      let hourText = null
+      if (hour > 1) {
+        hourText = this.$t('book.hours')
+      } else {
+        hourText = this.$t('book.hour')
+      }
+      return hour > 0 ? `${hour}${hourText}  ${min}${this.$t('book.minutes')}` : `${min}${this.$t('book.minutes')}`
     },
     title: function () {
       return this.metadata == null ? '' : this.metadata.title
@@ -101,6 +108,7 @@ export default {
     // 搜索算法
     doSearch (q) {
       return Promise.all(
+        // 重要的代码片段
         this.currentBook.spine.spineItems.map(
           section => section.load(this.currentBook.load.bind(this.currentBook))
             .then(section.find.bind(section, q))

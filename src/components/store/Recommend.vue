@@ -1,6 +1,6 @@
 <template>
   <div class="recommend">
-    <title-view label="热门推荐" btn="查看全部"></title-view>
+    <title-view :label="$t('home.recommend')" :btn="$t('home.seeAll')"></title-view>
     <div class="recommend-list">
       <div class="recommend-item" v-for="(item, index) in data" :key="index" @click="showBookDetail(item)">
         <div class="img-wrapper">
@@ -8,7 +8,7 @@
         </div>
         <div class="content-wrapper">
           <div class="title title-medium" ref="title">{{item.title}}</div>
-          <div class="num sub-title" ref="num">{{'$1人同时在读'.replace('$1', item.readers)}}</div>
+          <div class="num sub-title" ref="num">{{$t('home.readers').replace('$1', item.readers)}}</div>
         </div>
       </div>
     </div>

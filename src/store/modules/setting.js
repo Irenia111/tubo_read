@@ -1,4 +1,4 @@
-import { fontSizeMap, fontFamilyMap, themeMap } from './settingMap'
+import { fontSizeMap, fontFamilyMap } from './settingMap'
 
 function saveToLocal (state) {
   const setting = JSON.parse(JSON.stringify(
@@ -16,8 +16,7 @@ const setting = {
     fontSizeList: fontSizeMap.fontSizeList,
     currentFontFamily: '',
     fontFamilyList: fontFamilyMap.fontFamilyList,
-    currentTheme: '',
-    themeList: themeMap.themeList
+    currentTheme: ''
   },
   mutations: {
     INIT_SETTING: (state) => {
@@ -25,7 +24,7 @@ const setting = {
       if (file == null) {
         state.currentFontSize = JSON.parse(JSON.stringify(fontSizeMap.fontSizeList[fontSizeMap.defaultSizeIndex]))
         state.currentFontFamily = JSON.parse(JSON.stringify(fontFamilyMap.fontFamilyList[fontFamilyMap.defaultFontFamilyIndex]))
-        state.currentTheme = JSON.parse(JSON.stringify(themeMap.themeList[themeMap.defaultThemeIndex]))
+        state.currentTheme = 'default'
         saveToLocal(state)
       } else {
         state.currentFontSize = JSON.parse(file).currentFontSize
@@ -41,8 +40,8 @@ const setting = {
       state.currentFontFamily = state.fontFamilyList[fontFamilyIndex]
       saveToLocal(state)
     },
-    SET_THEME: (state, themeIndex) => {
-      state.currentTheme = state.themeList[themeIndex]
+    SET_THEME: (state, themeName) => {
+      state.currentTheme = themeName
       saveToLocal(state)
     }
   }

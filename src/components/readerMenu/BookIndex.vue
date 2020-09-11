@@ -9,10 +9,10 @@
             <div class="tab-wrapper">
               <div :class="['tab-item', { 'is-active': currentTab === 1 }]"
                    @click="toggleCurrentTabComponent('tab1')"
-              >目录</div>
+              >{{$t('book.navigation')}}</div>
               <div :class="['tab-item', { 'is-active': currentTab === 2 }]"
                    @click="toggleCurrentTabComponent('tab2')"
-              >书签</div>
+              >{{$t('book.bookmark')}}</div>
             </div>
           </div>
         </transition>

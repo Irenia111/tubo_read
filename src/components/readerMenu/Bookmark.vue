@@ -74,7 +74,7 @@ export default {
   },
   data () {
     return {
-      text: '下拉添加书签',
+      text: this.$t('book.pulldownAddMark'),
       color: WHITE,
       isFixed: false
     }
@@ -127,11 +127,11 @@ export default {
     beforeHeight () {
       // 状态1：未超过书签的高度
       if (this.isBookmark) {
-        this.text = '下拉删除书签'
+        this.text = this.$t('book.pulldownDeleteMark')
         this.color = BLUE
         this.isFixed = true
       } else {
-        this.text = '下拉添加书签'
+        this.text = this.$t('book.pulldownAddMark')
         this.color = WHITE
         this.isFixed = false
       }
@@ -157,9 +157,9 @@ export default {
       if (this.isBookmark) {
         this.text = '松开删除书签'
         this.color = WHITE
-        this.isFixed = false
+        this.isFixed = this.$t('book.releaseDeleteMark')
       } else {
-        this.text = '松开添加书签'
+        this.text = this.$t('book.releaseAddMark')
         this.color = BLUE
         this.isFixed = true
       }

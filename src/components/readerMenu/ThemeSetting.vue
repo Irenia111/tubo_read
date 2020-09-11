@@ -2,15 +2,16 @@
   <div class="theme-list-wrapper">
     <div class="theme-list">
       <div v-for="item in themeList" :key="item.index"
-        :class="['item',{'is-active': item.index === currentTheme.index}]"
-           @click="selectTheme(item)"
+        :class="['item',{'is-active': item.name === currentTheme}]"
+        @click="selectTheme(item)"
       >
         <div class="preview"
              :style="{
           background: item.style.body.background,
-          color: item.style.body.color}"
+          color: item.style.body.color
+        }"
         >Abc</div>
-        <div class="item-des">{{item.chName}}</div>
+        <div class="item-des">{{item.alias}}</div>
       </div>
     </div>
   </div>
@@ -24,8 +25,10 @@ export default {
   mixins: [settingMixins],
   methods: {
     selectTheme (item) {
-      this.$store.dispatch('setTheme', item.index)
-      this.currentBook.rendition.themes.select(this.currentTheme.name)
+      this.$store.dispatch('setTheme', item.name).then(() => {
+        this.currentBook.rendition.themes.select(this.currentTheme)
+        // this.initGlobalStyle()
+      })
     }
   }
 }

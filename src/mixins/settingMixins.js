@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex'
+import { themeList } from '../utils/book'
 
 export default {
   computed: {
@@ -9,8 +10,10 @@ export default {
       'currentFontFamily',
       'fontFamilyList',
       'currentTheme',
-      'themeList',
       'currentBook'
-    ])
+    ]),
+    themeList () {
+      return themeList(this)
+    }
   }
 }

@@ -24,7 +24,11 @@ export default {
     // 初始化阅读器设置
     this.$store.dispatch('initSetting')
     this.$store.dispatch('setFileName', bookName).then(() => {
-      this.renderBook()
+      // 阅读器支持传入资源地址，或者blob对象
+      // 先从本地存储中拿到blobd对象，要是拿不到，则使用url
+      const fileType = '.epub'
+      const url = process.env.VUE_APP_RES_URL + this.fileName + fileType
+      this.renderBook(url)
       this.startBookTimer()
       // 初始化当前书本数据
       this.$store.dispatch('initCurrentBook')
@@ -34,10 +38,10 @@ export default {
     clearInterval(this.bookTimer)
   },
   methods: {
-    renderBook () {
-      const baseUrl = 'http://127.0.0.1:8081/epub/'
-      const fileType = '.epub'
-      const url = baseUrl + this.fileName + fileType
+    initBook () {
+
+    },
+    renderBook (url) {
       this.book = new Epub(url)
       this.$store.dispatch('setCurrentBook', this.book).then(() => {
         this.rendition = this.book.renderTo('reader', {

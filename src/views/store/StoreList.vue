@@ -33,7 +33,7 @@ export default {
   computed: {
     title () {
       if (this.list) {
-        return this.total && '共 $1 本图书'.replace('$1', this.totalNumber)
+        return this.total && this.$t('home.allBook').replace('$1', this.totalNumber)
       } else {
         return '无相关书籍'
       }
@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     getCategoryText (key) {
-      return `${categoryText(categoryListNumber[key])}(${this.list[key].length})`
+      return `${categoryText(categoryListNumber[key], this)}(${this.list[key].length})`
     },
     back () {
       // 回退到上个页面

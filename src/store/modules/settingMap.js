@@ -15,65 +15,6 @@ const fontSizeMap = {
     { index: 11, fontSize: 40 }
   ]
 }
-
-const themeMap = {
-  defaultThemeIndex: 0,
-  themeList: [
-    {
-      index: 0,
-      name: 'Default',
-      chName: '默认',
-      style: {
-        body: {
-          color: '#4c5059',
-          background: '#cecece',
-          'padding-top': '48px !important',
-          'padding-bottom': '48px !important'
-        }
-      }
-    },
-    {
-      index: 1,
-      name: 'Gold',
-      chName: '雅致',
-      style: {
-        body: {
-          color: '#5c5b56',
-          background: '#c6c2b6',
-          'padding-top': '48px !important',
-          'padding-bottom': '48px !important'
-        }
-      }
-    },
-    {
-      index: 2,
-      name: 'Eye',
-      chName: '护眼',
-      style: {
-        body: {
-          color: '#404c42',
-          background: '#a9c1a9',
-          'padding-top': '48px !important',
-          'padding-bottom': '48px !important'
-        }
-      }
-    },
-    {
-      index: 3,
-      name: 'Night',
-      chName: '黑夜',
-      style: {
-        body: {
-          color: '#cecece',
-          background: '#000000',
-          'padding-top': '48px !important',
-          'padding-bottom': '48px !important'
-        }
-      }
-    }
-  ]
-}
-
 const fontFamilyMap = {
   defaultFontFamilyIndex: 0,
   fontFamilyList: [
@@ -84,4 +25,4 @@ const fontFamilyMap = {
     { index: 4, name: 'Tangerine', fontName: 'Tangerine' }
   ]
 }
-export { fontSizeMap, themeMap, fontFamilyMap }
+export { fontSizeMap, fontFamilyMap }

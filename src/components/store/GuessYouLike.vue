@@ -1,6 +1,6 @@
 <template>
   <div class="guess-you-like">
-    <title-view label="猜你喜欢" btn="换一批" @onClick="change"></title-view>
+    <title-view :label="$t('home.guessYouLike')" :btn="$t('home.change')" @onClick="change"></title-view>
     <div class="guess-you-like-list">
       <div class="guess-you-like-item" v-for="(item, index) in showData" :key="index" @click="showBookDetail(item)">
         <div class="img-wrapper">
@@ -68,11 +68,11 @@ export default {
       if (item && item.type && item.result) {
         switch (item.type) {
           case 1:
-            return '与$1同作者'.replace('$1', item.result)
+            return this.$t('home.sameAuthor').replace('$1', item.result)
           case 2:
-            return '对$1感兴趣的人也在读'.replace('$1', item.result)
+            return this.$t('home.sameReader').replace('$1', item.result)
           case 3:
-            return '阅读$2的人，$1都在读'.replace('$1', item.percent).replace('$2', item.result)
+            return this.$t('home.readPercent').replace('$1', item.percent).replace('$2', item.result)
         }
       }
     },
