@@ -7,7 +7,8 @@
           {{selectedText}}
         </span>
       </div>
-      <div class="shelf-title-btn-wrapper shelf-title-left">
+      <!-- 在书架页面，显示清除缓存 -->
+      <div class="shelf-title-btn-wrapper shelf-title-left" v-if="showClear">
         <span class="shelf-title-btn-text" @click="clearCache">{{$t('shelf.clearCache')}}</span>
       </div>
       <div class="shelf-title-btn-wrapper shelf-title-right">
@@ -15,8 +16,9 @@
           {{isEditMode ? $t('shelf.cancel') : $t('shelf.edit')}}
         </span>
       </div>
+      <!-- 进入分类页面之后，显示回退 -->
       <div class="shelf-title-btn-wrapper shelf-title-left" v-if="showBack">
-        <span class="icon-back"></span>
+        <span class="icon-back" @click="back"></span>
       </div>
       <div class="shelf-title-btn-wrapper"
            :class="{'shelf-title-left': changeGroupLeft, 'shelf-title-right': changeGroupRight}"
@@ -44,7 +46,6 @@ export default {
   },
   data () {
     return {
-      showBack: false,
       changeGroupLeft: false,
       changeGroupRight: false,
       showChangeGroup: false,
@@ -55,6 +56,12 @@ export default {
     selectedText () {
       const selectedNumber = this.shelfSelected ? this.shelfSelected.length : 0
       return selectedNumber <= 0 ? this.$t('shelf.selectBook') : (selectedNumber === 1 ? this.$t('shelf.haveSelectedBook').replace('$1', selectedNumber) : this.$t('shelf.haveSelectedBooks').replace('$1', selectedNumber))
+    },
+    showClear () {
+      return this.currentType === 1
+    },
+    showBack () {
+      return this.currentType === 2 && !this.isEditMode
     }
   },
   methods: {
@@ -72,6 +79,10 @@ export default {
       this.getShelfList()
       // 提示清除缓存成功
       this.$toast(this.$t('shelf.clearCacheSuccess')).show()
+    },
+    back () {
+      this.$router.go(-1)
+      this.$store.dispatch('setIsEditMode', false)
     }
   }
 }

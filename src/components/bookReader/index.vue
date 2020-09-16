@@ -13,34 +13,46 @@
 import Epub from 'epubjs'
 import bookMixins from '../../mixins/bookMixins'
 import settingMixins from '../../mixins/settingMixins'
+import { getLocalForage } from '../../utils/localForage'
 // 设置全局的ePub变量
 global.ePub = Epub
 export default {
   name: 'bookReader',
   mixins: [bookMixins, settingMixins],
   mounted () {
-    const url = this.$route.params.fileName
-    const bookName = url.split('|').join('/')
+    const bookName = this.$route.params.fileName.split('|').join('/')
+    const books = this.$route.params.fileName.split('|')
+    const fileName = books[1]
     // 初始化阅读器设置
     this.$store.dispatch('initSetting')
-    this.$store.dispatch('setFileName', bookName).then(() => {
-      // 阅读器支持传入资源地址，或者blob对象
-      // 先从本地存储中拿到blobd对象，要是拿不到，则使用url
-      const fileType = '.epub'
-      const url = process.env.VUE_APP_RES_URL + this.fileName + fileType
-      this.renderBook(url)
-      this.startBookTimer()
-      // 初始化当前书本数据
-      this.$store.dispatch('initCurrentBook')
+    // 阅读器支持传入资源地址，或者blob对象
+    // 先从本地存储中拿到blobd对象，要是拿不到，则使用url下载网络资源
+    getLocalForage(fileName, (err, blob) => {
+      if (!err && blob) {
+        console.log('加载离线资源')
+        this.$store.dispatch('setFileName', bookName).then(() => {
+          this.renderBook(blob)
+          this.startBookTimer()
+          // 初始化当前书本数据
+          this.$store.dispatch('initCurrentBook')
+        })
+      } else {
+        console.log('加载线上资源')
+        this.$store.dispatch('setFileName', bookName).then(() => {
+          const fileType = '.epub'
+          const url = process.env.VUE_APP_RES_URL + this.fileName + fileType
+          this.renderBook(url)
+          this.startBookTimer()
+          // 初始化当前书本数据
+          this.$store.dispatch('initCurrentBook')
+        })
+      }
     })
   },
   beforeDestroy () {
     clearInterval(this.bookTimer)
   },
   methods: {
-    initBook () {
-
-    },
     renderBook (url) {
       this.book = new Epub(url)
       this.$store.dispatch('setCurrentBook', this.book).then(() => {

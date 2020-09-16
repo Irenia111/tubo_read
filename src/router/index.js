@@ -40,12 +40,12 @@ const routes = [
       {
         path: 'shelf',
         component: () => import('../views/store/StoreShelf.vue')
-      }
-      /*,
+      },
       {
         path: 'category',
-        component: () => import('../components/store/StoreCategory.vue')
-      },
+        component: () => import('../views/store/StoreCategory.vue')
+      }
+      /*,
       {
         path: 'speaking',
         component: () => import('../components/store/StoreSpeaking.vue')

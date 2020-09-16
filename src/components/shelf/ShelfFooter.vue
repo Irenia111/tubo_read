@@ -135,9 +135,9 @@ export default {
     },
     onComplete () {
       // 本地保存shelfList
-      window.localStorage.setItem('shelfList', this.shelfList)
-      // this.hidePopup()
-      // this.$store.dispatch('setIsEditMode', false)
+      window.localStorage.setItem('shelfList', JSON.stringify(this.shelfList))
+      this.hidePopup()
+      this.$store.dispatch('setIsEditMode', false)
     },
     showPrivate () {
       this.popupMenu = this.$popup({
@@ -255,7 +255,7 @@ export default {
             book.cache = false
           })
           // 本地保存shelfList
-          window.localStorage.setItem('shelfList', this.shelfList)
+          window.localStorage.setItem('shelfList', JSON.stringify(this.shelfList))
           // 删除缓存，提示删除成功
           this.$toast({ text: this.$t('shelf.removeDownloadSuccess') }).show()
         })

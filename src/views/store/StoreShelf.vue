@@ -1,13 +1,13 @@
 <template>
   <div class="store-shelf">
-    <shelf-title :title="$t('shelf.title')"></shelf-title>
+    <shelf-title :title="$t('shelf.title')" :ifShowBack="false"></shelf-title>
     <scroll class="store-shelf-scroll-wrapper"
             :top="0"
             :bottom="scrollBottom"
             @onScroll="onScroll"
             ref="scroll">
       <shelf-search></shelf-search>
-      <shelf-list></shelf-list>
+      <shelf-list :data="shelfList"></shelf-list>
     </scroll>
     <shelf-footer></shelf-footer>
   </div>
@@ -35,7 +35,8 @@ export default {
   },
   data () {
     return {
-      scrollBottom: 0
+      scrollBottom: 0,
+      list: null
     }
   },
   methods: {
@@ -53,7 +54,6 @@ export default {
         }
       })
     }
-
      */
   },
   mounted () {

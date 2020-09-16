@@ -57,6 +57,6 @@ export function loading (option) {
   loadingInstance = new LoadingConstructor({ data: option })
   loadingInstance.$mount()
   document.body.appendChild(loadingInstance.$el)
-  console.log(loadingInstance)
+  // console.log(loadingInstance)
   return loadingInstance
 }

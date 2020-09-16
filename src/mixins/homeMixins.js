@@ -42,16 +42,25 @@ export default {
           if (response.status === 200 && response.data && response.data.bookList) {
             // console.log(response.data.bookList)
             const list = appendAddToShelf(response.data.bookList)
+
             // 本地存储shelfList
-            window.localStorage.setItem('shelfList', this.shelfList)
+            window.localStorage.setItem('shelfList', JSON.stringify(list))
             // 更新vuex中的shelfList
-            this.$store.dispatch('setShelfList', list)
+            return this.$store.dispatch('setShelfList', list)
           }
         })
       } else {
         // 已有本地存储, 初始化vuex
-        this.$store.dispatch('setShelfList', shelfList)
+        return this.$store.dispatch('setShelfList', JSON.parse(shelfList))
       }
+    },
+    // 获得具体的书籍类目数据
+    getCategoryList (title) {
+      // 因为this.getShelfList()返回值是action的promise对象
+      this.getShelfList().then(() => {
+        const categoryList = this.shelfList.filter(book => book.type === 2 && book.title === title)[0]
+        this.$store.dispatch('setShelfCategory', categoryList)
+      })
     }
   }
 }

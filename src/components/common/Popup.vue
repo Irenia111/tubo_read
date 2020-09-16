@@ -5,7 +5,7 @@
     <div class="popup-bg" @click.stop.prevent="hide" v-show="popupBgVisible"></div>
     </transition>
     <transition name="popup-slide-in">
-    <div class="popup-wrapper" v-show="popupItemvisible">
+    <div class="popup-wrapper" v-show="popupItemVisible">
       <div class="popup-title" v-if="title && title.length > 0">{{title}}</div>
       <div class="popup-btn"
            :class="{'danger':item.type==='danger'}"
@@ -28,7 +28,7 @@ export default {
       // 设置两个 visible 是为了控制弹窗和背景的动画效果
       popupVisible: false,
       popupBgVisible: false,
-      popupItemvisible: false
+      popupItemVisible: false
     }
   },
   methods: {
@@ -43,11 +43,11 @@ export default {
       */
       setTimeout(() => {
         this.popupBgVisible = true
-        this.popupItemvisible = true
+        this.popupItemVisible = true
       }, 0)
     },
     hide () {
-      this.popupItemvisible = false
+      this.popupItemVisible = false
       this.popupBgVisible = false
     },
     handleLeave () {

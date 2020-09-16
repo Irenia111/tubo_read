@@ -113,6 +113,7 @@ export default {
     },
     moveToGroup (group) {
       // 书籍分组的实现
+      // 有一个bug 第一本书，没有移入书架，还在外面存着
       // 1.遍历书架图书，当前图书在shelfSelected中则过滤
       this.$store.dispatch('setShelfList', this.shelfList.filter(book => this.shelfSelected.indexOf(book) < 0))
         .then(() => {
@@ -152,7 +153,7 @@ export default {
         .then(this.onComplete())
     },
     onComplete () {
-      // saveBookShelf(this.shelfList)
+      window.localStorage.setItem('shelfList', JSON.stringify(this.shelfList))
       this.hide()
       this.$store.dispatch('setIsEditMode', false)
     }

@@ -65,7 +65,13 @@ export default {
           this.showBookDetail(this.data)
           break
         case 2:
-          // TODO
+          this.$router.push({
+            path: '/store/category',
+            query: {
+              // 将分类名称作为参数，从路由传入
+              title: this.data.title
+            }
+          })
           break
         case 3:
           this.gotoStoreHome()
